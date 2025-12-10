@@ -1,0 +1,262 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   CSS VARIABLES - DESIGN SYSTEM
+   ============================================ */
+:root {
+  /* Hauptfarben - Gedeckte Naturtöne */
+  --primary: #3E4E3A;        /* Olivgrün */
+  --primary-light: #6B8E5C;  /* Moosgrün */
+  --secondary: #9CAF88;      /* Salbeigrün */
+  --accent: #8B7355;         /* Warmes Braun */
+
+  /* Text-Farben */
+  --text-dark: #2C2C2C;
+  --text-medium: #616161;
+  --text-light: #9E9E9E;
+
+  /* Hintergründe */
+  --bg-light: #F8F8F8;
+  --border-light: #E0E0E0;
+}
+
+/* ============================================
+   MATERIAL DESIGN 3 TYPOGRAPHY SCALE
+   ============================================ */
+
+/* Display - Große Hero-Überschriften */
+.display-large {
+  font-family: 'Roboto', sans-serif;
+  font-size: 57px;
+  line-height: 64px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
+}
+
+.display-medium {
+  font-family: 'Roboto', sans-serif;
+  font-size: 45px;
+  line-height: 52px;
+  font-weight: 400;
+}
+
+.display-small {
+  font-family: 'Roboto', sans-serif;
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 400;
+}
+
+/* Headline - Sektions-Überschriften */
+.headline-large {
+  font-family: 'Roboto', sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
+}
+
+.headline-medium {
+  font-family: 'Roboto', sans-serif;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+}
+
+.headline-small {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+/* Title - Überschriften in Cards */
+.title-large {
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+}
+
+.title-medium {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+}
+
+.title-small {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+/* Body - Fließtext */
+.body-large {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.body-medium {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+}
+
+.body-small {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+}
+
+/* Label - Buttons, Navigation */
+.label-large {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.label-medium {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.label-small {
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY (Mobile <768px)
+   ============================================ */
+@media (max-width: 767px) {
+  .display-large {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .display-medium {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .headline-large {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .headline-medium {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-dark);
+  background-color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   MATERIAL ICONS SETUP
+   ============================================ */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: 300;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.container-custom {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-custom {
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding: 0 4rem;
+  }
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Selection colors */
+::selection {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+/* Smooth transitions */
+a, button {
+  transition: all 0.3s ease;
+}
+
+/* Link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary);
+}
