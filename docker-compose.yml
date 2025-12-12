@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  fagus-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fagus-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    # Optional: Wenn du Environment-Variablen brauchst
+    # env_file:
+    #   - .env.production
+    networks:
+      - fagus-network
+
+networks:
+  fagus-network:
+    driver: bridge
