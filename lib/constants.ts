@@ -180,19 +180,19 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     platform: 'LinkedIn',
     icon: 'link',
-    url: 'https://linkedin.com',
+    url: 'https://www.linkedin.com/company/108531363',
     ariaLabel: 'Besuchen Sie uns auf LinkedIn',
   },
   {
     platform: 'GitHub',
     icon: 'code',
-    url: 'https://github.com',
+    url: 'https://github.com/foe05',
     ariaLabel: 'Folgen Sie uns auf GitHub',
   },
   {
     platform: 'Email',
     icon: 'email',
-    url: 'mailto:kontakt@broetzens.de',
+    url: 'mailto:hallo@broetzens.de',
     ariaLabel: 'Schreiben Sie uns eine E-Mail',
   },
 ];
@@ -204,12 +204,12 @@ export const COMPANY_INFO = {
   name: 'Broetzens IT Cattles & Cows',
   tagline: 'AI-First IT-Beratung für Forstbetriebe',
   description: 'Verwurzelt in Tradition, gewachsen durch Innovation',
-  phone: '+49 123 456789',
-  email: 'kontakt@broetzens.de',
+  phone: '+49 163 2347224',
+  email: 'hallo@broetzens.de',
   address: {
-    street: 'Musterstraße 123',
-    zip: '12345',
-    city: 'Musterstadt',
+    street: 'Rosenblathstrasse 11',
+    zip: '34121',
+    city: 'Kassel',
     country: 'Deutschland',
   },
 };
