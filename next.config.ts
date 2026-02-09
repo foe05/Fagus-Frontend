@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: 'broetzens.de',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/**',
+      },
     ],
   },
 };
