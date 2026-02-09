@@ -255,7 +255,7 @@ export default function KontaktPage() {
                   Buchen Sie direkt einen Termin für ein kostenloses 30-minütiges Beratungsgespräch.
                 </p>
                 <a
-                  href="https://calendly.com/broetzens"
+                  href="https://calendly.com/johannes-broetzens/30min"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-primary text-primary rounded-full label-large hover:bg-primary hover:text-white transition-all duration-300"
