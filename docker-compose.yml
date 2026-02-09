@@ -5,13 +5,11 @@ services:
       dockerfile: docker/Dockerfile
     container_name: fagus
     restart: unless-stopped
-    ports:
-      - "3080:80"
     volumes:
       - wp_content:/var/www/wordpress/wp-content
     environment:
       # WordPress Site URL (anpassen an echte Domain)
-      - WP_URL=http://localhost
+      - WP_URL=https://broetzens.de
       # Next.js WordPress API (intern im Container)
       - WP_API_URL=http://localhost/wp-json/wp/v2
       # E-Mail / SMTP (fuer Kontaktformular)
@@ -24,11 +22,11 @@ services:
       # WordPress Debug (optional)
       # - WP_DEBUG=true
     networks:
-      - fagus-network
+      - proxy
 
 volumes:
   wp_content:
 
 networks:
-  fagus-network:
-    driver: bridge
+  proxy:
+    external: true
