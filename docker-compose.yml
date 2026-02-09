@@ -5,6 +5,8 @@ services:
       dockerfile: docker/Dockerfile
     container_name: fagus
     restart: unless-stopped
+    ports:
+      - "3080:80"
     volumes:
       - wp_content:/var/www/wordpress/wp-content
     environment:
