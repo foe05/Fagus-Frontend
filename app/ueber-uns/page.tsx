@@ -1,6 +1,47 @@
 import Link from 'next/link';
+import { getChildPages, stripHtml } from '@/lib/wordpress';
 
-export default function UeberUnsPage() {
+export const revalidate = 300;
+
+const fallbackLinks = [
+  {
+    title: 'Team & Werte',
+    href: '/ueber-uns/team-werte',
+    icon: 'group',
+    description: 'Lernen Sie unser Team kennen',
+  },
+  {
+    title: 'AI-First Ansatz',
+    href: '/ueber-uns/ai-first-ansatz',
+    icon: 'psychology',
+    description: 'Wie wir KI einsetzen',
+  },
+  {
+    title: 'Referenzen',
+    href: '/ueber-uns/referenzen',
+    icon: 'star',
+    description: 'Erfolgreiche Projekte',
+  },
+  {
+    title: 'Blog & Wissen',
+    href: '/ueber-uns/blog-wissen',
+    icon: 'menu_book',
+    description: 'Aktuelle Artikel',
+  },
+];
+
+export default async function UeberUnsPage() {
+  const wpChildren = await getChildPages('ueber-uns');
+
+  // Build link cards: WordPress children or fallback
+  const linkCards = wpChildren.length > 0
+    ? wpChildren.map((page) => ({
+        title: page.title.rendered,
+        href: `/ueber-uns/${page.slug}`,
+        description: stripHtml(page.excerpt.rendered).trim() || '',
+      }))
+    : fallbackLinks;
+
   return (
     <div className="pt-[70px] min-h-screen">
       {/* Hero Section */}
@@ -62,40 +103,15 @@ export default function UeberUnsPage() {
         </div>
       </section>
 
-      {/* Quick Links */}
+      {/* Quick Links - dynamic from WordPress or fallback */}
       <section className="py-20 bg-bg-light">
         <div className="container-custom">
           <h2 className="headline-large text-text-dark mb-12 text-center">
             Mehr über uns erfahren
           </h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {[
-              {
-                title: 'Team & Werte',
-                href: '/ueber-uns/team-werte',
-                icon: 'group',
-                description: 'Lernen Sie unser Team kennen',
-              },
-              {
-                title: 'AI-First Ansatz',
-                href: '/ueber-uns/ai-first-ansatz',
-                icon: 'psychology',
-                description: 'Wie wir KI einsetzen',
-              },
-              {
-                title: 'Referenzen',
-                href: '/ueber-uns/referenzen',
-                icon: 'star',
-                description: 'Erfolgreiche Projekte',
-              },
-              {
-                title: 'Blog & Wissen',
-                href: '/ueber-uns/blog-wissen',
-                icon: 'menu_book',
-                description: 'Aktuelle Artikel',
-              },
-            ].map((link) => (
+          <div className={`grid md:grid-cols-2 ${linkCards.length >= 4 ? 'lg:grid-cols-4' : `lg:grid-cols-${Math.min(linkCards.length, 3)}`} gap-6 max-w-6xl mx-auto`}>
+            {linkCards.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -103,13 +119,16 @@ export default function UeberUnsPage() {
               >
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <span className="material-symbols-outlined text-primary text-[28px]">
-                    {link.icon}
+                    {'icon' in link ? (link as { icon: string }).icon : 'article'}
                   </span>
                 </div>
-                <h3 className="title-large text-text-dark mb-2 group-hover:text-primary transition-colors">
-                  {link.title}
-                </h3>
-                <p className="body-medium text-text-medium">{link.description}</p>
+                <h3
+                  className="title-large text-text-dark mb-2 group-hover:text-primary transition-colors"
+                  dangerouslySetInnerHTML={{ __html: link.title }}
+                />
+                {link.description && (
+                  <p className="body-medium text-text-medium">{link.description}</p>
+                )}
               </Link>
             ))}
           </div>

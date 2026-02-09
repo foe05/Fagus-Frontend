@@ -194,6 +194,38 @@ export async function getPageBySlug(slug: string): Promise<WordPressPage | null>
 }
 
 /**
+ * Fetch child pages of a parent page by parent slug
+ * @param parentSlug - Slug of the parent page
+ * @returns Array of WordPress child pages
+ */
+export async function getChildPages(parentSlug: string): Promise<WordPressPage[]> {
+  try {
+    const parent = await getPageBySlug(parentSlug);
+    if (!parent) return [];
+
+    const response = await fetch(
+      `${WP_API_URL}/pages?parent=${parent.id}&per_page=100&orderby=menu_order&order=asc&_embed`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
  * Get all page slugs for static site generation
  * @returns Array of page slugs
  */
