@@ -6,7 +6,7 @@ services:
     container_name: fagus
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "3080:80"
     volumes:
       - wp_content:/var/www/wordpress/wp-content
     environment:
