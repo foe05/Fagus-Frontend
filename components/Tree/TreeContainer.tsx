@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { HOTSPOTS } from '@/lib/constants';
 import type { Hotspot as HotspotType } from '@/lib/types';
@@ -9,6 +9,7 @@ import Popup from './Popup';
 
 export default function TreeContainer() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotType | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleHotspotClick = (hotspot: HotspotType) => {
     setSelectedHotspot(hotspot);
@@ -21,14 +22,18 @@ export default function TreeContainer() {
   return (
     <div className="relative w-full min-h-screen">
       {/* Tree Image */}
-      <div className="relative w-full h-screen">
+      <div className="relative w-full h-screen bg-gray-200">
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+        )}
         <Image
           src="/baum.webp"
           alt="Majestätische Rotbuche mit sichtbaren Wurzeln"
           fill
-          className="object-cover"
+          className={`object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           priority
           quality={85}
+          onLoad={() => setImageLoaded(true)}
         />
 
         {/* Hotspots */}
@@ -58,13 +63,14 @@ export default function TreeContainer() {
 function ScrollIndicator() {
   const [visible, setVisible] = useState(true);
 
-  if (typeof window !== 'undefined') {
+  useEffect(() => {
     const handleScroll = () => {
       setVisible(window.scrollY < 100);
     };
 
     window.addEventListener('scroll', handleScroll);
-  }
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!visible) return null;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { Hotspot } from '@/lib/types';
 
@@ -10,7 +10,13 @@ interface PopupProps {
 }
 
 export default function Popup({ hotspot, onClose }: PopupProps) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElement = useRef<Element | null>(null);
+
   useEffect(() => {
+    previouslyFocusedElement.current = document.activeElement;
+
     // Close on ESC key
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -18,13 +24,37 @@ export default function Popup({ hotspot, onClose }: PopupProps) {
       }
     };
 
+    // Focus trap
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || !dialogRef.current) return;
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleEsc);
+    window.addEventListener('keydown', handleTab);
+    closeButtonRef.current?.focus();
 
     return () => {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('keydown', handleTab);
+      if (previouslyFocusedElement.current instanceof HTMLElement) {
+        previouslyFocusedElement.current.focus();
+      }
     };
   }, [onClose]);
 
@@ -39,6 +69,10 @@ export default function Popup({ hotspot, onClose }: PopupProps) {
       }}
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="popup-title"
         className="relative bg-white rounded-3xl max-w-lg w-full p-8 shadow-[0_30px_80px_rgba(0,0,0,0.4)]"
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -47,6 +81,7 @@ export default function Popup({ hotspot, onClose }: PopupProps) {
       >
         {/* Close Button */}
         <button
+          ref={closeButtonRef}
           onClick={onClose}
           className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors group"
           aria-label="Schließen"
@@ -68,7 +103,7 @@ export default function Popup({ hotspot, onClose }: PopupProps) {
               {hotspot.icon}
             </span>
           </div>
-          <h2 className="headline-small text-text-dark">
+          <h2 id="popup-title" className="headline-small text-text-dark">
             {hotspot.title}
           </h2>
         </div>

@@ -4,7 +4,7 @@ import { FOOTER_COLUMNS, SOCIAL_LINKS, COMPANY_INFO } from '@/lib/constants';
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white pt-16 pb-8">
+    <footer role="contentinfo" className="bg-primary text-white pt-16 pb-8">
       <div className="container-custom">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
@@ -32,7 +32,7 @@ export default function Footer() {
             </p>
 
             {/* Social Links */}
-            <div className="flex gap-4">
+            <nav aria-label="Social Media" className="flex gap-4">
               {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.platform}
@@ -42,17 +42,17 @@ export default function Footer() {
                   aria-label={social.ariaLabel}
                   className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
                     {social.icon}
                   </span>
                 </a>
               ))}
-            </div>
+            </nav>
           </div>
 
           {/* Columns 2-5: Footer Links */}
           {FOOTER_COLUMNS.map((column) => (
-            <div key={column.title}>
+            <nav key={column.title} aria-label={column.title}>
               <h3 className="label-small mb-4 text-white/60">
                 {column.title}
               </h3>
@@ -68,7 +68,7 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 
@@ -78,7 +78,7 @@ export default function Footer() {
             © {new Date().getFullYear()} {COMPANY_INFO.name}. Alle Rechte vorbehalten.
           </p>
 
-          <div className="flex gap-6">
+          <nav aria-label="Rechtliche Informationen" className="flex gap-6">
             <Link
               href="/impressum"
               className="body-small text-white/60 hover:text-white transition-colors"
@@ -97,7 +97,7 @@ export default function Footer() {
             >
               AGB
             </Link>
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

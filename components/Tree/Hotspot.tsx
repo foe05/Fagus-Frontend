@@ -10,8 +10,9 @@ interface HotspotProps {
 
 export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
   return (
-    <div
+    <button
       className="hotspot group"
+      aria-label={hotspot.label}
       style={{
         position: 'absolute',
         left: hotspot.position.left,
@@ -22,6 +23,9 @@ export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
         opacity: 0,
         animation: `fadeInPop 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
         animationDelay: `${0.3 + index * 0.2}s`,
+        background: 'none',
+        border: 'none',
+        padding: 0,
       }}
       onClick={() => onClick(hotspot)}
     >
@@ -50,6 +54,14 @@ export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
       </div>
 
       <style jsx>{`
+        .hotspot:focus {
+          outline: none;
+        }
+        .hotspot:focus-visible > div > div:nth-child(2) {
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+          outline: 2px solid #3b82f6;
+          outline-offset: 2px;
+        }
         .hotspot-produkte .absolute {
           background: var(--primary);
         }
@@ -101,6 +113,6 @@ export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
           }
         }
       `}</style>
-    </div>
+    </button>
   );
 }
