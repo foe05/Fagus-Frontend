@@ -44,6 +44,12 @@ define('WP_DEBUG_DISPLAY', false);
 
 // ── Security ───────────────────────────────────────
 define('DISALLOW_FILE_EDIT', true);
+define('FORCE_SSL_ADMIN', false);
+
+// Prevent HTTPS redirect when behind reverse proxy or on plain HTTP
+if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== 'on') {
+    $_SERVER['HTTPS'] = 'off';
+}
 
 // ── Performance ────────────────────────────────────
 define('WP_POST_REVISIONS', 5);
