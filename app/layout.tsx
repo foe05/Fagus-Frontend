@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import ProgressBar from '@/components/ProgressBar';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import Plausible from '@/components/analytics/Plausible';
+import { getSiteIcon } from '@/lib/wordpress';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -13,18 +14,28 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'Broetzens IT Cattles & Cows - AI-First IT-Beratung für Forstbetriebe',
-  description: 'Moderne IT-Lösungen und Digitalisierung für Forstbetriebe. Verwurzelt in Tradition, gewachsen durch Innovation.',
-  keywords: ['IT-Beratung', 'Forstbetriebe', 'Digitalisierung', 'AI-First', 'Hegegemeinschaft', 'Prozessoptimierung'],
-  authors: [{ name: 'Broetzens IT Cattles & Cows' }],
-  openGraph: {
-    title: 'Broetzens IT Cattles & Cows',
-    description: 'AI-First IT-Beratung für Forstbetriebe',
-    type: 'website',
-    locale: 'de_DE',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteIconUrl = await getSiteIcon();
+
+  return {
+    title: 'Broetzens IT Cattles & Cows - AI-First IT-Beratung für Forstbetriebe',
+    description: 'Moderne IT-Lösungen und Digitalisierung für Forstbetriebe. Verwurzelt in Tradition, gewachsen durch Innovation.',
+    keywords: ['IT-Beratung', 'Forstbetriebe', 'Digitalisierung', 'AI-First', 'Hegegemeinschaft', 'Prozessoptimierung'],
+    authors: [{ name: 'Broetzens IT Cattles & Cows' }],
+    openGraph: {
+      title: 'Broetzens IT Cattles & Cows',
+      description: 'AI-First IT-Beratung für Forstbetriebe',
+      type: 'website',
+      locale: 'de_DE',
+    },
+    ...(siteIconUrl && {
+      icons: {
+        icon: siteIconUrl,
+        apple: siteIconUrl,
+      },
+    }),
+  };
+}
 
 export default function RootLayout({
   children,

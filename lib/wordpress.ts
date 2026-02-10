@@ -2,6 +2,39 @@ import type { WordPressPost, WordPressPage } from './types';
 import { WP_API_URL, WP_CACHE_REVALIDATE } from './constants';
 
 // ============================================
+// SITE SETTINGS
+// ============================================
+
+/**
+ * Fetch the site icon (favicon) URL from WordPress
+ * Uses the WordPress REST API root endpoint which exposes site_icon_url
+ * @returns Site icon URL or null if not set
+ */
+export async function getSiteIcon(): Promise<string | null> {
+  try {
+    // Derive the WP REST API root from WP_API_URL by removing /wp/v2
+    const wpJsonUrl = WP_API_URL.replace(/\/wp\/v2\/?$/, '');
+    const response = await fetch(wpJsonUrl, {
+      next: { revalidate: WP_CACHE_REVALIDATE },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return null;
+    }
+
+    const data = await response.json();
+    return data.site_icon_url || null;
+  } catch (error) {
+    console.error('WordPress API Error (site icon):', error);
+    return null;
+  }
+}
+
+// ============================================
 // POSTS API
 // ============================================
 
