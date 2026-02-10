@@ -5,11 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { NAVIGATION_ITEMS } from '@/lib/constants';
+import { useThemeContext } from '@/lib/ThemeProvider';
 
 export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useThemeContext();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,6 +75,17 @@ export default function Header() {
             <span className="material-symbols-outlined text-[20px]">call</span>
             <span className="hidden sm:inline">Ruf an!</span>
           </Link>
+
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-text-dark hover:text-primary transition-colors"
+            aria-label={theme === 'light' ? 'Dark Mode aktivieren' : 'Light Mode aktivieren'}
+          >
+            <span className="material-symbols-outlined text-[28px]">
+              {theme === 'light' ? 'dark_mode' : 'light_mode'}
+            </span>
+          </button>
 
           {/* Mobile Menu Button */}
           <button
