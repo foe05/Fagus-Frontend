@@ -9,6 +9,13 @@ interface HotspotProps {
 }
 
 export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(hotspot);
+    }
+  };
+
   return (
     <button
       className="hotspot group"
@@ -28,6 +35,7 @@ export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
         padding: 0,
       }}
       onClick={() => onClick(hotspot)}
+      onKeyDown={handleKeyDown}
     >
       <div className="relative">
         {/* Pulse Ring */}
