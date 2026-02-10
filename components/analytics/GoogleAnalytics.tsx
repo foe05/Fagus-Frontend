@@ -1,13 +1,19 @@
 'use client';
 
 import Script from 'next/script';
+import { useCookieConsentContext } from '@/components/cookie-consent/CookieConsentProvider';
 
 interface GoogleAnalyticsProps {
   gaId: string;
 }
 
 export default function GoogleAnalytics({ gaId }: GoogleAnalyticsProps) {
-  if (!gaId) return null;
+  const { preferences, isLoaded } = useCookieConsentContext();
+
+  // Don't render if no GA ID, consent not loaded, or analytics not consented
+  if (!gaId || !isLoaded || !preferences.analytics) {
+    return null;
+  }
 
   return (
     <>

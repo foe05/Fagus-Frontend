@@ -5,6 +5,8 @@ import Header from '@/components/Header';
 import LazyFooter from '@/components/LazyFooter';
 import ProgressBar from '@/components/ProgressBar';
 import LazyAnalytics from '@/components/LazyAnalytics';
+import { CookieConsentProvider } from '@/components/cookie-consent/CookieConsentProvider';
+import CookieConsentBanner from '@/components/cookie-consent/CookieConsentBanner';
 import { getSiteIcon } from '@/lib/wordpress';
 
 const roboto = Roboto({
@@ -62,15 +64,18 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {/* Analytics */}
-        <LazyAnalytics gaId={gaId} plausibleDomain={plausibleDomain} />
+        <CookieConsentProvider>
+          {/* Analytics - must be inside provider to access consent context */}
+          <LazyAnalytics gaId={gaId} plausibleDomain={plausibleDomain} />
 
-        <ProgressBar />
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <LazyFooter />
+          <ProgressBar />
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <LazyFooter />
+          <CookieConsentBanner />
+        </CookieConsentProvider>
       </body>
     </html>
   );

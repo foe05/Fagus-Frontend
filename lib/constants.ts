@@ -215,6 +215,27 @@ export const COMPANY_INFO = {
 };
 
 // ============================================
+// COOKIE CONSENT (GDPR/TTDSG)
+// ============================================
+export const COOKIE_CONSENT_TEXT = {
+  title: 'Cookie-Einstellungen',
+  description:
+    'Wir verwenden Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu ermöglichen. Einige Cookies sind technisch notwendig, während andere uns helfen, die Website zu verbessern und Ihnen ein besseres Nutzungserlebnis zu bieten.',
+  acceptAll: 'Alle akzeptieren',
+  rejectAll: 'Alle ablehnen',
+  customize: 'Einstellungen',
+  save: 'Speichern',
+  necessaryLabel: 'Notwendige Cookies',
+  necessaryDescription:
+    'Diese Cookies sind für die Grundfunktionen der Website erforderlich und können nicht deaktiviert werden.',
+  analyticsLabel: 'Analyse Cookies',
+  analyticsDescription:
+    'Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren, indem sie Informationen anonym sammeln und melden.',
+  privacyPolicyLink: '/datenschutz',
+  privacyPolicyText: 'Mehr in unserer Datenschutzerklärung',
+};
+
+// ============================================
 // WORDPRESS API
 // ============================================
 export const WP_API_URL = process.env.WP_API_URL || 'http://localhost/wp-json/wp/v2';

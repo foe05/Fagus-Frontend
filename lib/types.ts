@@ -102,7 +102,6 @@ export interface WordPressAPIResponse {
   total: number;
   totalPages: number;
 }
-
 export interface WordPressCategory {
   id: number;
   name: string;
@@ -130,4 +129,15 @@ export interface WordPressAuthor {
     48?: string;
     96?: string;
   };
+}
+
+// ============================================
+// COOKIE CONSENT TYPES
+// ============================================
+export type CookieConsentStatus = 'pending' | 'accepted' | 'rejected' | 'customized';
+
+export interface CookieConsentPreferences {
+  analytics: boolean;
+  status: CookieConsentStatus;
+  timestamp?: string;
 }

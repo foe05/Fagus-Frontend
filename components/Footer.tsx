@@ -1,8 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { FOOTER_COLUMNS, SOCIAL_LINKS, COMPANY_INFO } from '@/lib/constants';
+import { useCookieConsentContext } from './cookie-consent/CookieConsentProvider';
 
 export default function Footer() {
+  const { openSettings } = useCookieConsentContext();
   return (
     <footer role="contentinfo" className="bg-primary text-white pt-16 pb-8">
       <div className="container-custom">
@@ -97,6 +101,12 @@ export default function Footer() {
             >
               AGB
             </Link>
+            <button
+              onClick={openSettings}
+              className="body-small text-white/60 hover:text-white transition-colors"
+            >
+              Cookie-Einstellungen
+            </button>
           </nav>
         </div>
       </div>
