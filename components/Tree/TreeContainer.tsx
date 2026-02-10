@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { HOTSPOTS } from '@/lib/constants';
 import type { Hotspot as HotspotType } from '@/lib/types';
@@ -10,31 +10,31 @@ import Popup from './Popup';
 export default function TreeContainer() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotType | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const previouslyFocusedElement = useRef<Element | null>(null);
+
+  // Create a Map to store refs for each hotspot button
+  const hotspotRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  // Track which hotspot button to return focus to
+  const returnFocusRef = useRef<HTMLButtonElement | null>(null);
+
+  // Callback ref function to store hotspot button refs
+  const setHotspotRef = (id: string) => (el: HTMLButtonElement | null) => {
+    if (el) {
+      hotspotRefs.current.set(id, el);
+    } else {
+      hotspotRefs.current.delete(id);
+    }
+  };
 
   const handleHotspotClick = (hotspot: HotspotType) => {
-    // Store the currently focused element before opening popup
-    previouslyFocusedElement.current = document.activeElement;
+    // Store reference to the hotspot button that opened the popup
+    returnFocusRef.current = hotspotRefs.current.get(hotspot.id) || null;
     setSelectedHotspot(hotspot);
   };
 
   const handleClosePopup = () => {
     setSelectedHotspot(null);
   };
-
-  // Coordinate focus restoration when popup closes
-  useEffect(() => {
-    if (!selectedHotspot && previouslyFocusedElement.current instanceof HTMLElement) {
-      // Small delay to ensure popup has fully unmounted
-      const timeoutId = setTimeout(() => {
-        if (previouslyFocusedElement.current instanceof HTMLElement) {
-          previouslyFocusedElement.current.focus();
-        }
-      }, 0);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [selectedHotspot]);
 
   return (
     <div className="relative w-full min-h-screen">
@@ -58,6 +58,7 @@ export default function TreeContainer() {
           {HOTSPOTS.map((hotspot, index) => (
             <Hotspot
               key={hotspot.id}
+              ref={setHotspotRef(hotspot.id)}
               hotspot={hotspot}
               onClick={handleHotspotClick}
               index={index}
@@ -71,7 +72,11 @@ export default function TreeContainer() {
 
       {/* Popup */}
       {selectedHotspot && (
-        <Popup hotspot={selectedHotspot} onClose={handleClosePopup} />
+        <Popup
+          hotspot={selectedHotspot}
+          onClose={handleClosePopup}
+          returnFocusRef={returnFocusRef.current ? { current: returnFocusRef.current } : undefined}
+        />
       )}
     </div>
   );
