@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { NEWSLETTER_TOPICS } from '@/lib/constants';
 import { subscribeToNewsletter, type NewsletterSubscriptionData } from '@/app/actions/newsletter';
 
@@ -114,9 +115,9 @@ export default function NewsletterForm({ variant = 'full', className = '' }: New
             />
             <label htmlFor="gdpr-compact" className="body-small text-text-medium">
               Ich stimme der{' '}
-              <a href="/datenschutz" className="text-primary hover:underline">
+              <Link href="/datenschutz" className="text-primary hover:underline">
                 Datenschutzerklärung
-              </a>{' '}
+              </Link>{' '}
               zu und möchte den Newsletter erhalten. *
             </label>
           </div>
@@ -159,9 +160,9 @@ export default function NewsletterForm({ variant = 'full', className = '' }: New
           )}
 
           <p className="body-small text-text-medium">
-            <a href="/newsletter/abonnieren" className="text-primary hover:underline">
+            <Link href="/newsletter/abonnieren" className="text-primary hover:underline">
               Themenauswahl und mehr Details →
-            </a>
+            </Link>
           </p>
         </form>
       </div>
@@ -228,9 +229,9 @@ export default function NewsletterForm({ variant = 'full', className = '' }: New
           />
           <label htmlFor="gdpr" className="body-medium text-text-dark">
             Ich stimme der{' '}
-            <a href="/datenschutz" className="text-primary hover:underline">
+            <Link href="/datenschutz" className="text-primary hover:underline">
               Datenschutzerklärung
-            </a>{' '}
+            </Link>{' '}
             zu und möchte den Newsletter mit Informationen zu Digitalisierung, KI und Produkten
             erhalten. Ich kann mich jederzeit über den Link in jeder E-Mail abmelden. *
           </label>

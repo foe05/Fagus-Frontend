@@ -1,0 +1,39 @@
+{
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  },
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "Read(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/**)",
+      "Write(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/**)",
+      "Edit(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/**)",
+      "Glob(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/**)",
+      "Grep(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/**)",
+      "Read(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/.auto-claude/specs/017-newsletter-subscription/**)",
+      "Write(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/.auto-claude/specs/017-newsletter-subscription/**)",
+      "Edit(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/worktrees/tasks/017-newsletter-subscription/.auto-claude/specs/017-newsletter-subscription/**)",
+      "Read(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/**)",
+      "Write(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/**)",
+      "Edit(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/**)",
+      "Glob(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/**)",
+      "Grep(/home/foe/9_sideprojects/GITHUB/Fagus-Frontend/.auto-claude/**)",
+      "Bash(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__context7__resolve-library-id(*)",
+      "mcp__context7__get-library-docs(*)",
+      "mcp__graphiti-memory__search_nodes(*)",
+      "mcp__graphiti-memory__search_facts(*)",
+      "mcp__graphiti-memory__add_episode(*)",
+      "mcp__graphiti-memory__get_episodes(*)",
+      "mcp__graphiti-memory__get_entity_edge(*)"
+    ]
+  }
+}
