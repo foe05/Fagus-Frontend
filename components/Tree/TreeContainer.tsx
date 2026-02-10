@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { HOTSPOTS } from '@/lib/constants';
 import type { Hotspot as HotspotType } from '@/lib/types';
@@ -10,14 +10,31 @@ import Popup from './Popup';
 export default function TreeContainer() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotType | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const previouslyFocusedElement = useRef<Element | null>(null);
 
   const handleHotspotClick = (hotspot: HotspotType) => {
+    // Store the currently focused element before opening popup
+    previouslyFocusedElement.current = document.activeElement;
     setSelectedHotspot(hotspot);
   };
 
   const handleClosePopup = () => {
     setSelectedHotspot(null);
   };
+
+  // Coordinate focus restoration when popup closes
+  useEffect(() => {
+    if (!selectedHotspot && previouslyFocusedElement.current instanceof HTMLElement) {
+      // Small delay to ensure popup has fully unmounted
+      const timeoutId = setTimeout(() => {
+        if (previouslyFocusedElement.current instanceof HTMLElement) {
+          previouslyFocusedElement.current.focus();
+        }
+      }, 0);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [selectedHotspot]);
 
   return (
     <div className="relative w-full min-h-screen">
