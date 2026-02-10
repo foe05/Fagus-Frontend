@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { unsubscribeFromNewsletter } from '@/app/actions/newsletter';
 
@@ -155,13 +156,13 @@ export default function AbmeldenPage() {
                 <p className="body-medium text-text-medium mb-4">
                   Falls Sie nur bestimmte Themen nicht mehr erhalten möchten, können Sie auch Ihre Newsletter-Einstellungen anpassen.
                 </p>
-                <a
+                <Link
                   href="/newsletter"
                   className="inline-flex items-center gap-2 text-primary hover:underline label-medium"
                 >
                   <span className="material-symbols-outlined">settings</span>
                   <span>Newsletter-Einstellungen</span>
-                </a>
+                </Link>
               </div>
             )}
 
@@ -170,13 +171,13 @@ export default function AbmeldenPage() {
                 <p className="body-medium text-text-medium mb-4">
                   Sie können sich jederzeit wieder anmelden.
                 </p>
-                <a
+                <Link
                   href="/newsletter"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full label-medium hover:bg-primary-light transition-colors"
                 >
                   <span className="material-symbols-outlined">mail</span>
                   <span>Zurück zur Newsletter-Anmeldung</span>
-                </a>
+                </Link>
               </div>
             )}
           </div>
