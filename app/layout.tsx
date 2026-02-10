@@ -7,6 +7,7 @@ import ProgressBar from '@/components/ProgressBar';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import Plausible from '@/components/analytics/Plausible';
 import { getSiteIcon } from '@/lib/wordpress';
+import { ThemeProvider } from '@/lib/ThemeProvider';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -46,7 +47,7 @@ export default function RootLayout({
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
   return (
-    <html lang="de" className={roboto.className}>
+    <html lang="de" className={roboto.className} suppressHydrationWarning>
       <head>
         {/* Material Symbols Outlined Icons */}
         <link
@@ -55,16 +56,18 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {/* Analytics */}
-        {gaId && <GoogleAnalytics gaId={gaId} />}
-        {plausibleDomain && <Plausible domain={plausibleDomain} />}
+        <ThemeProvider>
+          {/* Analytics */}
+          {gaId && <GoogleAnalytics gaId={gaId} />}
+          {plausibleDomain && <Plausible domain={plausibleDomain} />}
 
-        <ProgressBar />
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+          <ProgressBar />
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
