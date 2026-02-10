@@ -19,7 +19,29 @@
 
   /* Hintergründe */
   --bg-light: #F8F8F8;
+  --bg-surface: #FFFFFF;     /* Main surface color */
   --border-light: #E0E0E0;
+}
+
+/* ============================================
+   DARK MODE - MATERIAL DESIGN 3 COLORS
+   ============================================ */
+.dark {
+  /* Hauptfarben - Angepasst für dunklen Hintergrund */
+  --primary: #8FB67C;        /* Helleres Olivgrün für Kontrast */
+  --primary-light: #A5C99A;  /* Helleres Moosgrün */
+  --secondary: #B5C9A8;      /* Helleres Salbeigrün */
+  --accent: #C19A7A;         /* Helleres Braun */
+
+  /* Text-Farben - Material Design 3 Dark Surface */
+  --text-dark: #E6E6E6;      /* Hoher Kontrast Text */
+  --text-medium: #C5C5C5;    /* Mittlerer Kontrast */
+  --text-light: #A0A0A0;     /* Niedriger Kontrast */
+
+  /* Hintergründe - Material Design 3 Dark Scheme */
+  --bg-light: #1C1C1C;       /* Erhöhte Surface */
+  --bg-surface: #121212;     /* MD3 dark surface */
+  --border-light: #3A3A3A;   /* Outline color */
 }
 
 /* ============================================
@@ -187,7 +209,7 @@ html {
 body {
   font-family: 'Roboto', sans-serif;
   color: var(--text-dark);
-  background-color: white;
+  background-color: var(--bg-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -5,11 +5,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { NAVIGATION_ITEMS } from '@/lib/constants';
+import { useThemeContext } from '@/lib/ThemeProvider';
 
 export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useThemeContext();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +27,7 @@ export default function Header() {
       aria-label="Hauptnavigation"
       className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
         scrolled
-          ? 'bg-white/98 backdrop-blur-md shadow-[0_2px_20px_rgba(0,0,0,0.08)]'
+          ? 'bg-white/98 dark:bg-[#1C1C1C]/98 backdrop-blur-md shadow-[0_2px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_20px_rgba(255,255,255,0.08)]'
           : 'bg-transparent'
       }`}
       style={{ height: '70px' }}
@@ -74,6 +76,17 @@ export default function Header() {
             <span className="hidden sm:inline">Ruf an!</span>
           </Link>
 
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-text-dark hover:text-primary transition-colors"
+            aria-label={theme === 'light' ? 'Dark Mode aktivieren' : 'Light Mode aktivieren'}
+          >
+            <span className="material-symbols-outlined text-[28px]">
+              {theme === 'light' ? 'dark_mode' : 'light_mode'}
+            </span>
+          </button>
+
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -92,7 +105,7 @@ export default function Header() {
       {/* Mobile Menu */}
       <div
         id="mobile-menu"
-        className={`md:hidden absolute top-[70px] left-0 right-0 bg-white border-t border-border-light shadow-lg transition-all duration-300 ease-in-out ${
+        className={`md:hidden absolute top-[70px] left-0 right-0 bg-white dark:bg-[#1C1C1C] border-t border-border-light shadow-lg transition-all duration-300 ease-in-out ${
           mobileMenuOpen
             ? 'translate-y-0 opacity-100'
             : '-translate-y-full opacity-0 pointer-events-none'
