@@ -128,6 +128,37 @@ export async function getAllPostSlugs(): Promise<string[]> {
 }
 
 /**
+ * Search posts by query string
+ * @param query - Search query string
+ * @param limit - Number of posts to fetch (default: 10)
+ * @returns Array of WordPress posts matching the search query
+ */
+export async function searchPosts(query: string, limit: number = 10): Promise<WordPressPost[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/posts?search=${encodeURIComponent(query)}&per_page=${limit}&_embed`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const posts = await response.json();
+    return posts;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
  * Format WordPress date to German locale
  * @param dateString - ISO date string
  * @returns Formatted date string
