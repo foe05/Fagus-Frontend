@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import ProgressBar from '@/components/ProgressBar';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 import Plausible from '@/components/analytics/Plausible';
+import { CookieConsentProvider } from '@/components/cookie-consent/CookieConsentProvider';
+import CookieConsentBanner from '@/components/cookie-consent/CookieConsentBanner';
 import { getSiteIcon } from '@/lib/wordpress';
 
 const roboto = Roboto({
@@ -59,12 +61,15 @@ export default function RootLayout({
         {gaId && <GoogleAnalytics gaId={gaId} />}
         {plausibleDomain && <Plausible domain={plausibleDomain} />}
 
-        <ProgressBar />
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <CookieConsentProvider>
+          <ProgressBar />
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <CookieConsentBanner />
+        </CookieConsentProvider>
       </body>
     </html>
   );
