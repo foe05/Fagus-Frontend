@@ -1,4 +1,4 @@
-import type { WordPressPost, WordPressPage } from './types';
+import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag, WordPressAuthor } from './types';
 import { WP_API_URL, WP_CACHE_REVALIDATE } from './constants';
 
 // ============================================
@@ -121,6 +121,37 @@ export async function getAllPostSlugs(): Promise<string[]> {
 
     const posts = await response.json();
     return posts.map((post: { slug: string }) => post.slug);
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
+ * Search posts by query string
+ * @param query - Search query string
+ * @param limit - Number of posts to fetch (default: 10)
+ * @returns Array of WordPress posts matching the search query
+ */
+export async function searchPosts(query: string, limit: number = 10): Promise<WordPressPost[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/posts?search=${encodeURIComponent(query)}&per_page=${limit}&_embed`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const posts = await response.json();
+    return posts;
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];
@@ -284,5 +315,133 @@ export async function getAllPageSlugs(): Promise<string[]> {
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];
+  }
+}
+
+// ============================================
+// CATEGORIES AND TAGS API
+// ============================================
+
+/**
+ * Fetch all categories from WordPress REST API
+ * @param limit - Number of categories to fetch (default: 100)
+ * @returns Array of WordPress categories
+ */
+export async function getCategories(limit: number = 100): Promise<WordPressCategory[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/categories?per_page=${limit}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const categories = await response.json();
+    return categories;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch all tags from WordPress REST API
+ * @param limit - Number of tags to fetch (default: 100)
+ * @returns Array of WordPress tags
+ */
+export async function getTags(limit: number = 100): Promise<WordPressTag[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/tags?per_page=${limit}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const tags = await response.json();
+    return tags;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+// ============================================
+// AUTHORS API
+// ============================================
+
+/**
+ * Fetch all authors from WordPress REST API
+ * @param limit - Number of authors to fetch (default: 100)
+ * @returns Array of WordPress authors
+ */
+export async function getAuthors(limit: number = 100): Promise<WordPressAuthor[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/users?per_page=${limit}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const authors = await response.json();
+    return authors;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch a single author by ID
+ * @param id - Author ID
+ * @returns WordPress author or null if not found
+ */
+export async function getAuthor(id: number): Promise<WordPressAuthor | null> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/users/${id}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return null;
+    }
+
+    const author = await response.json();
+    return author;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return null;
   }
 }
