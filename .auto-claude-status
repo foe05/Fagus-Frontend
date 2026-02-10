@@ -1,25 +1,25 @@
 {
   "active": true,
-  "spec": "016-interactive-roi-calculator",
+  "spec": "017-newsletter-subscription",
   "state": "building",
   "subtasks": {
-    "completed": 2,
-    "total": 10,
+    "completed": 7,
+    "total": 14,
     "in_progress": 1,
     "failed": 0
   },
   "phase": {
-    "current": "Core Types & Calculation Logic",
+    "current": "Newsletter Pages",
     "id": null,
-    "total": 2
+    "total": 3
   },
   "workers": {
     "active": 0,
     "max": 1
   },
   "session": {
-    "number": 4,
-    "started_at": "2026-02-10T15:01:13.311730"
+    "number": 9,
+    "started_at": "2026-02-10T15:01:10.348290"
   },
-  "last_update": "2026-02-10T15:08:22.949273"
+  "last_update": "2026-02-10T15:17:29.640536"
 }
