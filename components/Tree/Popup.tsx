@@ -7,9 +7,10 @@ import type { Hotspot } from '@/lib/types';
 interface PopupProps {
   hotspot: Hotspot;
   onClose: () => void;
+  returnFocusRef?: React.RefObject<HTMLElement>;
 }
 
-export default function Popup({ hotspot, onClose }: PopupProps) {
+export default function Popup({ hotspot, onClose, returnFocusRef }: PopupProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedElement = useRef<Element | null>(null);
@@ -52,7 +53,10 @@ export default function Popup({ hotspot, onClose }: PopupProps) {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleEsc);
       window.removeEventListener('keydown', handleTab);
-      if (previouslyFocusedElement.current instanceof HTMLElement) {
+      // Prioritize returnFocusRef over previouslyFocusedElement
+      if (returnFocusRef?.current) {
+        returnFocusRef.current.focus();
+      } else if (previouslyFocusedElement.current instanceof HTMLElement) {
         previouslyFocusedElement.current.focus();
       }
     };

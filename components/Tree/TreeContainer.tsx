@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { HOTSPOTS } from '@/lib/constants';
 import type { Hotspot as HotspotType } from '@/lib/types';
@@ -11,7 +11,24 @@ export default function TreeContainer() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotType | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Create a Map to store refs for each hotspot button
+  const hotspotRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  // Track which hotspot button to return focus to
+  const returnFocusRef = useRef<HTMLButtonElement | null>(null);
+
+  // Callback ref function to store hotspot button refs
+  const setHotspotRef = (id: string) => (el: HTMLButtonElement | null) => {
+    if (el) {
+      hotspotRefs.current.set(id, el);
+    } else {
+      hotspotRefs.current.delete(id);
+    }
+  };
+
   const handleHotspotClick = (hotspot: HotspotType) => {
+    // Store reference to the hotspot button that opened the popup
+    returnFocusRef.current = hotspotRefs.current.get(hotspot.id) || null;
     setSelectedHotspot(hotspot);
   };
 
@@ -41,6 +58,7 @@ export default function TreeContainer() {
           {HOTSPOTS.map((hotspot, index) => (
             <Hotspot
               key={hotspot.id}
+              ref={setHotspotRef(hotspot.id)}
               hotspot={hotspot}
               onClick={handleHotspotClick}
               index={index}
@@ -54,7 +72,11 @@ export default function TreeContainer() {
 
       {/* Popup */}
       {selectedHotspot && (
-        <Popup hotspot={selectedHotspot} onClose={handleClosePopup} />
+        <Popup
+          hotspot={selectedHotspot}
+          onClose={handleClosePopup}
+          returnFocusRef={returnFocusRef.current ? { current: returnFocusRef.current } : undefined}
+        />
       )}
     </div>
   );
