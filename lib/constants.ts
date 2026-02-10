@@ -238,7 +238,12 @@ export const COOKIE_CONSENT_TEXT = {
 // ============================================
 // WORDPRESS API
 // ============================================
-export const WP_API_URL = process.env.WP_API_URL || 'http://localhost/wp-json/wp/v2';
+const rawWpApiUrl =
+  process.env.WP_API_URL ??
+  process.env.NEXT_PUBLIC_WP_API_URL ??
+  'http://localhost/wp-json/wp/v2';
+
+export const WP_API_URL = rawWpApiUrl.replace(/\/$/, '');
 export const WP_CACHE_REVALIDATE = 300; // 5 Minuten
 
 // ============================================
