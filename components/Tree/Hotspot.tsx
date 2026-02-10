@@ -1,5 +1,6 @@
 'use client';
 
+import { forwardRef } from 'react';
 import type { Hotspot as HotspotType } from '@/lib/types';
 
 interface HotspotProps {
@@ -8,18 +9,20 @@ interface HotspotProps {
   index: number;
 }
 
-export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick(hotspot);
-    }
-  };
+const Hotspot = forwardRef<HTMLButtonElement, HotspotProps>(
+  ({ hotspot, onClick, index }, ref) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onClick(hotspot);
+      }
+    };
 
-  return (
-    <button
-      className="hotspot group"
-      aria-label={hotspot.label}
+    return (
+      <button
+        ref={ref}
+        className="hotspot group"
+        aria-label={hotspot.label}
       style={{
         position: 'absolute',
         left: hotspot.position.left,
@@ -121,6 +124,11 @@ export default function Hotspot({ hotspot, onClick, index }: HotspotProps) {
           }
         }
       `}</style>
-    </button>
-  );
-}
+      </button>
+    );
+  }
+);
+
+Hotspot.displayName = 'Hotspot';
+
+export default Hotspot;
