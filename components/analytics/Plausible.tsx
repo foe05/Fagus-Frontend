@@ -1,13 +1,19 @@
 'use client';
 
 import Script from 'next/script';
+import { useCookieConsentContext } from '@/components/cookie-consent/CookieConsentProvider';
 
 interface PlausibleProps {
   domain: string;
 }
 
 export default function Plausible({ domain }: PlausibleProps) {
-  if (!domain) return null;
+  const { preferences, isLoaded } = useCookieConsentContext();
+
+  // Don't render if no domain, consent not loaded, or analytics not consented
+  if (!domain || !isLoaded || !preferences.analytics) {
+    return null;
+  }
 
   return (
     <Script
