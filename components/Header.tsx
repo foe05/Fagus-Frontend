@@ -35,7 +35,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-[45px] h-[45px]">
             <Image
-              src="/logo-color.png"
+              src="/logo-color.webp"
               alt="Broetzens IT Cattles & Cows"
               fill
               className="object-contain transition-transform duration-300 group-hover:scale-110"
