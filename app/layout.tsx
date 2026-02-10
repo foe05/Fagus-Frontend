@@ -57,11 +57,11 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {/* Analytics */}
-        {gaId && <GoogleAnalytics gaId={gaId} />}
-        {plausibleDomain && <Plausible domain={plausibleDomain} />}
-
         <CookieConsentProvider>
+          {/* Analytics - must be inside provider to access consent context */}
+          {gaId && <GoogleAnalytics gaId={gaId} />}
+          {plausibleDomain && <Plausible domain={plausibleDomain} />}
+
           <ProgressBar />
           <Header />
           <main className="min-h-screen">
