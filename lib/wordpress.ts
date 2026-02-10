@@ -1,4 +1,4 @@
-import type { WordPressPost, WordPressPage } from './types';
+import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag } from './types';
 import { WP_API_URL, WP_CACHE_REVALIDATE } from './constants';
 
 // ============================================
@@ -281,6 +281,70 @@ export async function getAllPageSlugs(): Promise<string[]> {
 
     const pages = await response.json();
     return pages.map((page: { slug: string }) => page.slug);
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+// ============================================
+// CATEGORIES AND TAGS API
+// ============================================
+
+/**
+ * Fetch all categories from WordPress REST API
+ * @param limit - Number of categories to fetch (default: 100)
+ * @returns Array of WordPress categories
+ */
+export async function getCategories(limit: number = 100): Promise<WordPressCategory[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/categories?per_page=${limit}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const categories = await response.json();
+    return categories;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch all tags from WordPress REST API
+ * @param limit - Number of tags to fetch (default: 100)
+ * @returns Array of WordPress tags
+ */
+export async function getTags(limit: number = 100): Promise<WordPressTag[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/tags?per_page=${limit}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const tags = await response.json();
+    return tags;
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];

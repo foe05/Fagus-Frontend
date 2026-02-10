@@ -102,3 +102,19 @@ export interface WordPressAPIResponse {
   total: number;
   totalPages: number;
 }
+
+export interface WordPressCategory {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  count: number;
+}
+
+export interface WordPressTag {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  count: number;
+}
