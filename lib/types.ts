@@ -102,3 +102,14 @@ export interface WordPressAPIResponse {
   total: number;
   totalPages: number;
 }
+
+// ============================================
+// COOKIE CONSENT TYPES
+// ============================================
+export type CookieConsentStatus = 'pending' | 'accepted' | 'rejected' | 'customized';
+
+export interface CookieConsentPreferences {
+  analytics: boolean;
+  status: CookieConsentStatus;
+  timestamp?: string;
+}
