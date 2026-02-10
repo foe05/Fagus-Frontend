@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { getPageBySlug, getAllPageSlugs } from '@/lib/wordpress';
-import WordPressPageComponent from '@/components/WordPressPage';
+
+const WordPressPageComponent = dynamic(() => import('@/components/WordPressPage'));
 
 export const revalidate = 300; // Revalidate every 5 minutes
 

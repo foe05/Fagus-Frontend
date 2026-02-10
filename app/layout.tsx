@@ -2,10 +2,9 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import LazyFooter from '@/components/LazyFooter';
 import ProgressBar from '@/components/ProgressBar';
-import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
-import Plausible from '@/components/analytics/Plausible';
+import LazyAnalytics from '@/components/LazyAnalytics';
 import { getSiteIcon } from '@/lib/wordpress';
 
 const roboto = Roboto({
@@ -48,6 +47,14 @@ export default function RootLayout({
   return (
     <html lang="de" className={roboto.className}>
       <head>
+        {/* DNS Prefetch for external resources */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+        {/* Preconnect to Google Fonts for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
         {/* Material Symbols Outlined Icons */}
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
@@ -56,15 +63,14 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {/* Analytics */}
-        {gaId && <GoogleAnalytics gaId={gaId} />}
-        {plausibleDomain && <Plausible domain={plausibleDomain} />}
+        <LazyAnalytics gaId={gaId} plausibleDomain={plausibleDomain} />
 
         <ProgressBar />
         <Header />
         <main className="min-h-screen">
           {children}
         </main>
-        <Footer />
+        <LazyFooter />
       </body>
     </html>
   );
