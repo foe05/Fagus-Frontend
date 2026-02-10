@@ -2,10 +2,9 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import LazyFooter from '@/components/LazyFooter';
 import ProgressBar from '@/components/ProgressBar';
-import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
-import Plausible from '@/components/analytics/Plausible';
+import LazyAnalytics from '@/components/LazyAnalytics';
 import { getSiteIcon } from '@/lib/wordpress';
 
 const roboto = Roboto({
@@ -56,15 +55,14 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {/* Analytics */}
-        {gaId && <GoogleAnalytics gaId={gaId} />}
-        {plausibleDomain && <Plausible domain={plausibleDomain} />}
+        <LazyAnalytics gaId={gaId} plausibleDomain={plausibleDomain} />
 
         <ProgressBar />
         <Header />
         <main className="min-h-screen">
           {children}
         </main>
-        <Footer />
+        <LazyFooter />
       </body>
     </html>
   );
