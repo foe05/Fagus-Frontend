@@ -2,24 +2,41 @@
 
 import Link from 'next/link';
 import { useCookieConsentContext } from './CookieConsentProvider';
+import CookieConsentSettings from './CookieConsentSettings';
 import { COOKIE_CONSENT_TEXT } from '@/lib/constants';
 
 /**
  * Cookie Consent Banner Komponente
  * Zeigt GDPR/TTDSG-konforme Cookie-Banner am unteren Bildschirmrand
  * Erscheint nur wenn der Benutzer noch keine Einwilligung gegeben hat
+ * Rendert auch das Settings-Modal wenn geöffnet
  */
 export default function CookieConsentBanner() {
-  const { hasConsented, isLoaded, acceptAll, rejectAll, openSettings } =
-    useCookieConsentContext();
+  const {
+    hasConsented,
+    isLoaded,
+    acceptAll,
+    rejectAll,
+    openSettings,
+    isSettingsOpen,
+    closeSettings,
+  } = useCookieConsentContext();
 
-  // Don't render during SSR or before localStorage is checked
-  // Also don't render if user has already made a choice
-  if (!isLoaded || hasConsented) {
+  // Determine if banner should be visible
+  const showBanner = isLoaded && !hasConsented;
+
+  // Don't render anything during SSR or if neither banner nor modal should show
+  if (!isLoaded && !isSettingsOpen) {
     return null;
   }
 
   return (
+    <>
+      {/* Cookie Settings Modal - can be opened from banner or footer */}
+      {isSettingsOpen && <CookieConsentSettings onClose={closeSettings} />}
+
+      {/* Banner - only shown when user hasn't consented yet */}
+      {showBanner && (
     <div
       role="dialog"
       aria-modal="false"
@@ -92,5 +109,7 @@ export default function CookieConsentBanner() {
         </div>
       </div>
     </div>
+      )}
+    </>
   );
 }
