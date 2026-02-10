@@ -1,25 +1,25 @@
 {
   "active": true,
   "spec": "016-interactive-roi-calculator",
-  "state": "planning",
+  "state": "building",
   "subtasks": {
-    "completed": 0,
-    "total": 0,
+    "completed": 2,
+    "total": 10,
     "in_progress": 1,
     "failed": 0
   },
   "phase": {
-    "current": "Setup Dependencies",
+    "current": "Core Types & Calculation Logic",
     "id": null,
-    "total": 1
+    "total": 2
   },
   "workers": {
     "active": 0,
     "max": 1
   },
   "session": {
-    "number": 2,
+    "number": 4,
     "started_at": "2026-02-10T15:01:13.311730"
   },
-  "last_update": "2026-02-10T15:04:39.186834"
+  "last_update": "2026-02-10T15:08:22.949273"
 }
