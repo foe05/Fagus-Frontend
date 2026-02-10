@@ -219,3 +219,31 @@ export const COMPANY_INFO = {
 // ============================================
 export const WP_API_URL = process.env.WP_API_URL || 'http://localhost/wp-json/wp/v2';
 export const WP_CACHE_REVALIDATE = 300; // 5 Minuten
+
+// ============================================
+// NEWSLETTER
+// ============================================
+export const NEWSLETTER_TOPICS = [
+  {
+    id: 'digitalization',
+    label: 'Digitalisierungs-Tipps',
+    description: 'Praktische Tipps zur Digitalisierung im Forstbetrieb',
+  },
+  {
+    id: 'ai',
+    label: 'AI-Trends',
+    description: 'Neueste Entwicklungen im Bereich Künstliche Intelligenz',
+  },
+  {
+    id: 'products',
+    label: 'Produkt-Updates',
+    description: 'Informationen zu neuen Features und Produkten',
+  },
+] as const;
+
+export const NEWSLETTER_CONFIG = {
+  doubleOptIn: true,
+  welcomeEmailEnabled: true,
+  unsubscribeEnabled: true,
+  defaultTopics: ['digitalization', 'ai', 'products'],
+} as const;
