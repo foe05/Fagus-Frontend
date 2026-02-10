@@ -1,4 +1,4 @@
-import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag } from './types';
+import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag, WordPressAuthor } from './types';
 import { WP_API_URL, WP_CACHE_REVALIDATE } from './constants';
 
 // ============================================
@@ -348,5 +348,69 @@ export async function getTags(limit: number = 100): Promise<WordPressTag[]> {
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];
+  }
+}
+
+// ============================================
+// AUTHORS API
+// ============================================
+
+/**
+ * Fetch all authors from WordPress REST API
+ * @param limit - Number of authors to fetch (default: 100)
+ * @returns Array of WordPress authors
+ */
+export async function getAuthors(limit: number = 100): Promise<WordPressAuthor[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/users?per_page=${limit}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return [];
+    }
+
+    const authors = await response.json();
+    return authors;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch a single author by ID
+ * @param id - Author ID
+ * @returns WordPress author or null if not found
+ */
+export async function getAuthor(id: number): Promise<WordPressAuthor | null> {
+  try {
+    const response = await fetch(
+      `${WP_API_URL}/users/${id}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      return null;
+    }
+
+    const author = await response.json();
+    return author;
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return null;
   }
 }

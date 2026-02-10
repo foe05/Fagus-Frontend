@@ -118,3 +118,16 @@ export interface WordPressTag {
   description: string;
   count: number;
 }
+
+export interface WordPressAuthor {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  link: string;
+  avatar_urls: {
+    24?: string;
+    48?: string;
+    96?: string;
+  };
+}
