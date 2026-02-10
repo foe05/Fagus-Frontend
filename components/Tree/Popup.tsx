@@ -17,6 +17,7 @@ export default function Popup({ hotspot, onClose, returnFocusRef }: PopupProps) 
 
   useEffect(() => {
     previouslyFocusedElement.current = document.activeElement;
+    const initialReturnFocus = returnFocusRef?.current ?? null;
 
     // Close on ESC key
     const handleEsc = (e: KeyboardEvent) => {
@@ -54,13 +55,13 @@ export default function Popup({ hotspot, onClose, returnFocusRef }: PopupProps) 
       window.removeEventListener('keydown', handleEsc);
       window.removeEventListener('keydown', handleTab);
       // Prioritize returnFocusRef over previouslyFocusedElement
-      if (returnFocusRef?.current) {
-        returnFocusRef.current.focus();
+      if (initialReturnFocus) {
+        initialReturnFocus.focus();
       } else if (previouslyFocusedElement.current instanceof HTMLElement) {
         previouslyFocusedElement.current.focus();
       }
     };
-  }, [onClose]);
+  }, [onClose, returnFocusRef]);
 
   return (
     <div
