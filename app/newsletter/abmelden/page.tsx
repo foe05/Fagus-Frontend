@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { unsubscribeFromNewsletter } from '@/app/actions/newsletter';
 
-export default function AbmeldenPage() {
+function AbmeldenContent() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<{
@@ -184,5 +184,21 @@ export default function AbmeldenPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function AbmeldenPage() {
+  return (
+    <Suspense
+      fallback={(
+        <div className="pt-[70px] min-h-screen flex items-center justify-center">
+          <span className="material-symbols-outlined animate-spin text-primary text-[32px]">
+            progress_activity
+          </span>
+        </div>
+      )}
+    >
+      <AbmeldenContent />
+    </Suspense>
   );
 }
