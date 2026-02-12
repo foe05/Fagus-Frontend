@@ -261,3 +261,196 @@ a {
 a:hover {
   color: var(--primary);
 }
+
+/* ============================================
+   WORDPRESS BLOCK STYLES
+   Styles for Gutenberg blocks rendered inside
+   the .prose container (WordPressPage component)
+   ============================================ */
+
+/* ── Columns Block (Grid Layout) ───────────── */
+.prose .wp-block-columns {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .prose .wp-block-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 3-column variant: add CSS class "columns-3" in WP editor */
+@media (min-width: 768px) {
+  .prose .wp-block-columns.columns-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.prose .wp-block-column {
+  margin: 0;
+  min-width: 0;
+}
+
+/* ── Group Block (Card Style) ──────────────── */
+.prose .wp-block-group {
+  padding: 1.5rem;
+  background-color: var(--bg-light);
+  border-radius: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.prose .wp-block-group > *:first-child {
+  margin-top: 0;
+}
+
+.prose .wp-block-group > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Group with primary background (add CSS class "has-primary-bg" in WP editor) */
+.prose .wp-block-group.has-primary-bg {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+}
+
+.prose .wp-block-group.has-primary-bg h3,
+.prose .wp-block-group.has-primary-bg h4,
+.prose .wp-block-group.has-primary-bg p {
+  color: white;
+}
+
+/* ── Feature Card Pattern ──────────────────── */
+/* Add CSS class "feature-card" to a Group block in WP editor
+   to get the icon + title + description card layout */
+.prose .wp-block-group.feature-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.prose .wp-block-group.feature-card > *:first-child {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: rgba(62, 78, 58, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.prose .wp-block-group.feature-card > *:last-child {
+  flex: 1;
+}
+
+/* ── Buttons Block ─────────────────────────── */
+.prose .wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose .wp-block-button .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.prose .wp-block-button .wp-block-button__link:hover {
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  color: white;
+}
+
+/* Outline button variant */
+.prose .wp-block-button.is-style-outline .wp-block-button__link {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.prose .wp-block-button.is-style-outline .wp-block-button__link:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* ── Separator Block ───────────────────────── */
+.prose .wp-block-separator {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 2rem 0;
+}
+
+/* ── Table Block ───────────────────────────── */
+.prose .wp-block-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prose .wp-block-table th {
+  background-color: var(--bg-light);
+  font-weight: 500;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--border-light);
+}
+
+.prose .wp-block-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.prose .wp-block-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Callout / Info Box ────────────────────── */
+/* Add CSS class "callout" to a Group block in WP editor */
+.prose .wp-block-group.callout {
+  background-color: rgba(62, 78, 58, 0.05);
+  border-left: 4px solid var(--primary);
+  padding: 2rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+
+/* ── CTA Box ───────────────────────────────── */
+/* Add CSS class "cta-box" to a Group block in WP editor */
+.prose .wp-block-group.cta-box {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 3rem;
+}
+
+/* ── Checklist Style ───────────────────────── */
+/* Add CSS class "checklist" to a List block in WP editor */
+.prose ul.checklist,
+.prose .checklist ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose ul.checklist li::before,
+.prose .checklist ul li::before {
+  content: "\2713";
+  color: #16a34a;
+  font-weight: bold;
+  margin-right: 0.75rem;
+}

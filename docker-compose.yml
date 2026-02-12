@@ -13,7 +13,7 @@ services:
       # WordPress Site URL (anpassen an echte Domain)
       - WP_URL=http://91.99.188.249:3080
       # Next.js WordPress API (intern im Container: Next.js -> Nginx -> PHP-FPM)
-      - WP_API_URL=http://localhost/wp-json/wp/v2
+      - WP_API_URL=http://127.0.0.1/wp-json/wp/v2
       # E-Mail / SMTP (fuer Kontaktformular)
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
