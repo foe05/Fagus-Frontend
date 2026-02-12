@@ -4,8 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FOOTER_COLUMNS, SOCIAL_LINKS, COMPANY_INFO } from '@/lib/constants';
 import { useCookieConsentContext } from './cookie-consent/CookieConsentProvider';
+import type { FooterColumn } from '@/lib/types';
 
-export default function Footer() {
+interface FooterProps {
+  footerColumns?: FooterColumn[];
+}
+
+export default function Footer({ footerColumns }: FooterProps) {
+  const columns = footerColumns ?? FOOTER_COLUMNS;
   const { openSettings } = useCookieConsentContext();
   return (
     <footer role="contentinfo" className="bg-primary text-white pt-16 pb-8">
@@ -55,7 +61,7 @@ export default function Footer() {
           </div>
 
           {/* Columns 2-5: Footer Links */}
-          {FOOTER_COLUMNS.map((column) => (
+          {columns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
               <h3 className="label-small mb-4 text-white/60">
                 {column.title}

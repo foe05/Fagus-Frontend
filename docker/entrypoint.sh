@@ -68,6 +68,12 @@ if [ -f "${SALT_FILE}" ] && [ -z "${WP_AUTH_KEY}" ]; then
     set +a
 fi
 
+# ── Copy bundled mu-plugins (ensure latest version) ──
+if [ -d "/opt/fagus/mu-plugins" ]; then
+    echo "Updating mu-plugins..."
+    cp -f /opt/fagus/mu-plugins/*.php "${WP_CONTENT}/mu-plugins/"
+fi
+
 # ── Set permissions ─────────────────────────────────
 chown -R www-data:www-data "${WP_CONTENT}"
 chmod -R 755 "${WP_CONTENT}"

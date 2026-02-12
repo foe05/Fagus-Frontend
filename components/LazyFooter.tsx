@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
+import type { FooterColumn } from '@/lib/types';
 
-const Footer = dynamic(() => import('./Footer'), {
+const FooterComponent = dynamic(() => import('./Footer'), {
   loading: () => (
     <footer role="contentinfo" className="bg-primary text-white pt-16 pb-8">
       <div className="container-custom">
@@ -13,4 +14,10 @@ const Footer = dynamic(() => import('./Footer'), {
   ssr: true,
 });
 
-export default Footer;
+interface LazyFooterProps {
+  footerColumns?: FooterColumn[];
+}
+
+export default function LazyFooter({ footerColumns }: LazyFooterProps) {
+  return <FooterComponent footerColumns={footerColumns} />;
+}

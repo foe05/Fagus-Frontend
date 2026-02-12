@@ -132,6 +132,21 @@ export interface WordPressAuthor {
 }
 
 // ============================================
+// WORDPRESS MENU TYPES
+// ============================================
+export interface WPMenuItem {
+  id: number;
+  title: string;
+  url: string;
+  path: string;
+  target: string;
+  css_classes: string[];
+  description: string;
+  parent: number;
+  children: WPMenuItem[];
+}
+
+// ============================================
 // COOKIE CONSENT TYPES
 // ============================================
 export type CookieConsentStatus = 'pending' | 'accepted' | 'rejected' | 'customized';

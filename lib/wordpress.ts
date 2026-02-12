@@ -1,5 +1,5 @@
-import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag, WordPressAuthor } from './types';
-import { WP_API_URL, WP_CACHE_REVALIDATE } from './constants';
+import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag, WordPressAuthor, WPMenuItem, NavigationItem, FooterColumn } from './types';
+import { WP_API_URL, WP_CACHE_REVALIDATE, NAVIGATION_ITEMS, FOOTER_COLUMNS } from './constants';
 
 // ============================================
 // SITE SETTINGS
@@ -444,4 +444,163 @@ export async function getAuthor(id: number): Promise<WordPressAuthor | null> {
     console.error('WordPress API Error:', error);
     return null;
   }
+}
+
+// ============================================
+// MENUS API (via fagus mu-plugin)
+// ============================================
+
+/**
+ * Fetch a WordPress menu by its registered location.
+ * Uses the custom fagus/v1 REST endpoint from the mu-plugin.
+ */
+export async function getMenuByLocation(location: string): Promise<WPMenuItem[]> {
+  try {
+    const baseUrl = WP_API_URL.replace(/\/wp\/v2\/?$/, '');
+    const response = await fetch(
+      `${baseUrl}/fagus/v1/menus/${location}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.warn(`Menu API: ${response.status} for location "${location}"`);
+      return [];
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.warn('Menu API unreachable, using fallback:', error);
+    return [];
+  }
+}
+
+/**
+ * Extract a Material Symbols icon name from WP menu item CSS classes.
+ * Convention: add class "menu-item-icon-{name}" in WP admin.
+ */
+function extractIconFromClasses(cssClasses: string[]): string {
+  for (const cls of cssClasses) {
+    if (cls.startsWith('menu-item-icon-')) {
+      return cls.replace('menu-item-icon-', '');
+    }
+  }
+  return 'link';
+}
+
+/**
+ * Map WP menu items to NavigationItem[] for the Header.
+ */
+function mapMenuToNavigationItems(items: WPMenuItem[]): NavigationItem[] {
+  return items.map((item) => ({
+    label: item.title,
+    href: item.path,
+    icon: extractIconFromClasses(item.css_classes),
+    ...(item.children.length > 0 && {
+      children: mapMenuToNavigationItems(item.children),
+    }),
+  }));
+}
+
+/**
+ * Map WP menu items to FooterColumn[] for the Footer.
+ * Top-level items become column titles, their children become links.
+ */
+function mapMenuToFooterColumns(items: WPMenuItem[]): FooterColumn[] {
+  return items.map((item) => ({
+    title: item.title,
+    links: item.children.map((child) => ({
+      label: child.title,
+      href: child.path,
+    })),
+  }));
+}
+
+/**
+ * Get header navigation: from WP menu or hardcoded fallback.
+ */
+export async function getHeaderNavigation(): Promise<NavigationItem[]> {
+  const items = await getMenuByLocation('header-menu');
+  if (items.length > 0) {
+    return mapMenuToNavigationItems(items);
+  }
+  return NAVIGATION_ITEMS;
+}
+
+/**
+ * Get footer navigation: from WP menu or hardcoded fallback.
+ */
+export async function getFooterNavigation(): Promise<FooterColumn[]> {
+  const items = await getMenuByLocation('footer-menu');
+  if (items.length > 0) {
+    return mapMenuToFooterColumns(items);
+  }
+  return FOOTER_COLUMNS;
+}
+
+// ============================================
+// PAGE PATH HELPERS (for catch-all route)
+// ============================================
+
+/**
+ * Fetch all pages and build full path segments for each.
+ * Returns array of { slug: string[], page: WordPressPage }.
+ */
+export async function getAllPagesWithPaths(): Promise<Array<{ slug: string[]; page: WordPressPage }>> {
+  const pages = await getPages();
+  if (pages.length === 0) return [];
+
+  const byId = new Map<number, WordPressPage>();
+  for (const page of pages) {
+    byId.set(page.id, page);
+  }
+
+  function buildPath(page: WordPressPage): string[] {
+    const segments: string[] = [page.slug];
+    let current = page;
+    while (current.parent && byId.has(current.parent)) {
+      current = byId.get(current.parent)!;
+      segments.unshift(current.slug);
+    }
+    return segments;
+  }
+
+  return pages.map((page) => ({
+    slug: buildPath(page),
+    page,
+  }));
+}
+
+/**
+ * Find a WP page by its URL path segments and verify the parent hierarchy.
+ */
+export async function getPageByPath(slugSegments: string[]): Promise<WordPressPage | null> {
+  if (slugSegments.length === 0) return null;
+
+  const lastSlug = slugSegments[slugSegments.length - 1];
+  const page = await getPageBySlug(lastSlug);
+  if (!page) return null;
+
+  // For single-segment paths, verify it's a top-level page
+  if (slugSegments.length === 1) {
+    return page.parent === 0 ? page : null;
+  }
+
+  // For multi-segment paths, walk up the parent chain and verify each slug matches
+  let current = page;
+  for (let i = slugSegments.length - 2; i >= 0; i--) {
+    if (!current.parent) return null;
+
+    const parentPage = await getPageBySlug(slugSegments[i]);
+    if (!parentPage || parentPage.id !== current.parent) return null;
+
+    current = parentPage;
+  }
+
+  // The topmost page in the chain must be a root page
+  return current.parent === 0 ? page : null;
 }

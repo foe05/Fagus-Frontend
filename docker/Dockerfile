@@ -71,6 +71,11 @@ COPY docker/wp-config.php /opt/fagus/wp-config.php
 COPY docker/entrypoint.sh /opt/fagus/entrypoint.sh
 RUN chmod +x /opt/fagus/entrypoint.sh
 
+# ── Copy mu-plugins ──────────────────────────────────
+COPY docker/mu-plugins/ /opt/fagus/mu-plugins/
+COPY docker/mu-plugins/ /var/www/wordpress/wp-content/mu-plugins/
+RUN chown -R www-data:www-data /var/www/wordpress/wp-content/mu-plugins
+
 # ── Create required directories ─────────────────────
 RUN mkdir -p /run/php \
     && mkdir -p /var/www/wordpress/wp-content/database \
