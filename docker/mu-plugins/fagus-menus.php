@@ -5,6 +5,18 @@
  * Version: 1.0.0
  */
 
+// Auto-set permalink structure to /%postname%/ on first install
+// Ensures REST API pretty URLs and correct slug routing from the start
+add_action('init', function () {
+    if (get_option('fagus_permalinks_set')) {
+        return;
+    }
+    global $wp_rewrite;
+    $wp_rewrite->set_permalink_structure('/%postname%/');
+    $wp_rewrite->flush_rules();
+    update_option('fagus_permalinks_set', true);
+}, 99);
+
 // Register menu locations
 add_action('after_setup_theme', function () {
     register_nav_menus([
