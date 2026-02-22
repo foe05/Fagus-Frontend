@@ -100,6 +100,10 @@ const Hotspot = forwardRef<HTMLButtonElement, HotspotProps>(
           background: var(--primary);
         }
 
+        .hotspot-themen .absolute {
+          background: var(--secondary);
+        }
+
         @keyframes pulse {
           0%, 100% {
             width: 50px;

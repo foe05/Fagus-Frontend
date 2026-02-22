@@ -382,6 +382,41 @@ export async function getTags(limit: number = 100): Promise<WordPressTag[]> {
   }
 }
 
+/**
+ * Fetch posts filtered by tag slug from WordPress REST API
+ * @param tagSlug - The tag slug to filter by
+ * @param limit - Number of posts to fetch (default: 10)
+ * @returns Array of WordPress posts
+ */
+export async function getPostsByTag(tagSlug: string, limit: number = 10): Promise<WordPressPost[]> {
+  try {
+    const tagsResponse = await fetch(
+      `${WP_API_URL}/tags?slug=${tagSlug}`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    if (!tagsResponse.ok) return [];
+    const tags = await tagsResponse.json();
+    if (!tags.length) return [];
+
+    const tagId = tags[0].id;
+    const response = await fetch(
+      `${WP_API_URL}/posts?tags=${tagId}&per_page=${limit}&_embed`,
+      {
+        next: { revalidate: WP_CACHE_REVALIDATE },
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    if (!response.ok) return [];
+    return await response.json();
+  } catch (error) {
+    console.error('WordPress API Error:', error);
+    return [];
+  }
+}
+
 // ============================================
 // AUTHORS API
 // ============================================

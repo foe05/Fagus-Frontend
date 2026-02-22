@@ -6,7 +6,7 @@ export interface Hotspot {
   icon: string;
   label: string;
   position: { left: string; top: string };
-  type: 'produkte' | 'services' | 'blog' | 'referenzen' | 'team' | 'werte';
+  type: 'produkte' | 'services' | 'blog' | 'referenzen' | 'team' | 'werte' | 'themen';
   title: string;
   description: string;
   link: string;

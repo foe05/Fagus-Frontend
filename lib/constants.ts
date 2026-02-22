@@ -10,14 +10,13 @@ export const HOTSPOTS: Hotspot[] = [
     label: 'Produkte',
     position: { left: '25%', top: '15%' },
     type: 'produkte',
-    title: 'Hegegemeinschaft Management',
-    description: 'Digitale Lösung für Jagdreviere mit 60+ aktiven Nutzern',
-    link: '/produkte/hegegemeinschaft-management',
+    title: 'Unsere Produkte',
+    description: 'Digitale Lösungen für Forst- und Jagdbetriebe',
+    link: '/produkte',
     features: [
-      'Revierübergreifendes Wildtiermanagement',
-      'Automatische Abschussplanung nach gesetzlichen Vorgaben',
-      'Mobile App für Jäger im Revier',
-      'Echtzeit-Synchronisation aller Daten',
+      'Hegegemeinschaft Management für revierübergreifendes Wildtiermanagement',
+      'Erdmassenberechnung für den Forststraßenbau',
+      'Hosting & Support für Forstbetriebe',
     ],
   },
   {
@@ -26,14 +25,14 @@ export const HOTSPOTS: Hotspot[] = [
     label: 'Services',
     position: { left: '75%', top: '18%' },
     type: 'services',
-    title: 'Digitalisierungs-Strategie',
-    description: 'AI-First Beratung für Forstbetriebe',
-    link: '/services/digitalisierungsstrategie',
+    title: 'Unsere Services',
+    description: 'AI-First Beratung und Entwicklung für Forstbetriebe',
+    link: '/services',
     features: [
-      'Strategische Beratung für digitale Transformation',
-      'Workshops zur Prozessanalyse',
-      'Technologie-Auswahl und Roadmap-Entwicklung',
-      'Begleitung bei der Umsetzung',
+      'Digitalisierungs-Strategie für Forstbetriebe',
+      'Prozessoptimierung & Automatisierung',
+      'Change Management bei Technologieeinführungen',
+      'Prototyping & MVP-Entwicklung',
     ],
   },
   {
@@ -66,6 +65,24 @@ export const HOTSPOTS: Hotspot[] = [
       'Erdmassenberechnung für Forststraßenbau',
       'Prozessautomatisierung in der Holzvermarktung',
       'Digitale Revierplanung und -verwaltung',
+    ],
+  },
+  {
+    id: 'themen',
+    icon: 'topic',
+    label: 'Themen',
+    position: { left: '33%', top: '33%' },
+    type: 'themen',
+    title: 'Themen & Schlagworte',
+    description: 'Die wichtigsten Themen rund um Digitalisierung im Forst',
+    link: '/themen',
+    features: [
+      'Digitalisierung in der Forstwirtschaft',
+      'Wildtiermanagement & Hegegemeinschaft',
+      'Automatisierung & Prozessoptimierung',
+      'AI-First Entwicklung',
+      'Mobile Apps für Jäger & Förster',
+      'Change Management & Transformation',
     ],
   },
   {
@@ -106,6 +123,11 @@ export const HOTSPOTS: Hotspot[] = [
 // NAVIGATION
 // ============================================
 export const NAVIGATION_ITEMS: NavigationItem[] = [
+  {
+    label: 'Themen',
+    href: '/themen',
+    icon: 'topic',
+  },
   {
     label: 'Services',
     href: '/services',
