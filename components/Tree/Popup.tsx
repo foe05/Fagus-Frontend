@@ -176,6 +176,7 @@ function getTypeColor(type: Hotspot['type']): string {
     referenzen: 'var(--accent)',
     team: 'var(--accent)',
     werte: 'var(--primary)',
+    themen: 'var(--secondary)',
   };
   return colors[type];
 }
