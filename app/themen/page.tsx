@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { getTags } from '@/lib/wordpress';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ThemenPage() {
   const allTags = await getTags(100);

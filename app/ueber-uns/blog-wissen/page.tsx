@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { getPosts, getPostsByTag, getTags } from '@/lib/wordpress';
 import BlogCard from '@/components/blog/BlogCard';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function BlogWissenPage({
   searchParams,

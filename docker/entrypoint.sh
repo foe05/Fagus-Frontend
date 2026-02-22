@@ -85,6 +85,7 @@ if [ -n "${WP_URL}" ] && [ -f "${WP_CONTENT}/database/.ht.sqlite" ]; then
         \$url = '${WP_URL}';
         \$db->exec(\"UPDATE wp_options SET option_value='\$url' WHERE option_name IN ('siteurl', 'home')\");
         echo 'URLs synced: ' . \$db->changes() . ' rows' . PHP_EOL;
+        \$db->close();
     " || echo "URL sync skipped (DB not yet initialized)"
 fi
 
