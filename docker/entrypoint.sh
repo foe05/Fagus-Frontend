@@ -74,6 +74,20 @@ if [ -d "/opt/fagus/mu-plugins" ]; then
     cp -f /opt/fagus/mu-plugins/*.php "${WP_CONTENT}/mu-plugins/"
 fi
 
+# ── Force correct WordPress URLs in DB ──────────────
+# Ensures admin URL changes cannot break the site.
+# WP_HOME/WP_SITEURL constants in wp-config.php already override at runtime,
+# but keeping the DB in sync prevents redirect loops on some setups.
+if [ -n "${WP_URL}" ] && [ -f "${WP_CONTENT}/database/.ht.sqlite" ]; then
+    echo "Syncing WordPress URLs to: ${WP_URL}"
+    php -r "
+        \$db = new SQLite3('${WP_CONTENT}/database/.ht.sqlite');
+        \$url = '${WP_URL}';
+        \$db->exec(\"UPDATE wp_options SET option_value='\$url' WHERE option_name IN ('siteurl', 'home')\");
+        echo 'URLs synced: ' . \$db->changes() . ' rows' . PHP_EOL;
+    " || echo "URL sync skipped (DB not yet initialized)"
+fi
+
 # ── Set permissions ─────────────────────────────────
 chown -R www-data:www-data "${WP_CONTENT}"
 chmod -R 755 "${WP_CONTENT}"
