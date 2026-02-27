@@ -1,33 +1,65 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import gsap from 'gsap';
 import { HOTSPOTS } from '@/lib/constants';
 import type { Hotspot as HotspotType } from '@/lib/types';
+import { getCurrentSeason, SEASON_IMAGES, FALLBACK_IMAGE } from '@/lib/seasons';
+import { usePlausible } from '@/hooks/usePlausible';
 import Hotspot from './Hotspot';
 import Popup from './Popup';
 
+// Lazy-load particles — not critical for first paint
+const SeasonalParticles = dynamic(() => import('./SeasonalParticles'), {
+  ssr: false,
+});
+
 export default function TreeContainer() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotType | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [fallbackLoaded, setFallbackLoaded] = useState(false);
+  const { trackEvent } = usePlausible();
 
-  // Create a Map to store refs for each hotspot button
+  const season = getCurrentSeason();
+  const seasonalSrc = SEASON_IMAGES[season];
+
+  const fallbackRef = useRef<HTMLDivElement>(null);
+  const seasonalRef = useRef<HTMLDivElement>(null);
+
+  // Hotspot ref management
   const hotspotRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-
-  // Track which hotspot button to return focus to
   const returnFocusRef = useRef<HTMLButtonElement | null>(null);
 
-  // Callback ref function to store hotspot button refs
-  const setHotspotRef = (id: string) => (el: HTMLButtonElement | null) => {
-    if (el) {
-      hotspotRefs.current.set(id, el);
-    } else {
-      hotspotRefs.current.delete(id);
-    }
-  };
+  const setHotspotRef = useCallback(
+    (id: string) => (el: HTMLButtonElement | null) => {
+      if (el) hotspotRefs.current.set(id, el);
+      else hotspotRefs.current.delete(id);
+    },
+    []
+  );
+
+  // GSAP crossfade: once the seasonal image loads, fade it in over the fallback
+  const handleSeasonalLoad = useCallback(() => {
+    const seasonal = seasonalRef.current;
+    const fallback = fallbackRef.current;
+    if (!seasonal || !fallback) return;
+
+    // Crossfade: seasonal fades in while fallback fades out (~0.8s)
+    const tl = gsap.timeline();
+    tl.to(seasonal, { opacity: 1, duration: 0.8, ease: 'power2.inOut' });
+    tl.to(fallback, { opacity: 0, duration: 0.8, ease: 'power2.inOut' }, '<');
+
+    return () => { tl.kill(); };
+  }, []);
+
+  // If seasonal image fails to load, keep the fallback visible
+  const handleSeasonalError = useCallback(() => {
+    if (seasonalRef.current) seasonalRef.current.style.display = 'none';
+  }, []);
 
   const handleHotspotClick = (hotspot: HotspotType) => {
-    // Store reference to the hotspot button that opened the popup
+    trackEvent('Tree Hotspot Clicked', { hotspot: hotspot.id });
     returnFocusRef.current = hotspotRefs.current.get(hotspot.id) || null;
     setSelectedHotspot(hotspot);
   };
@@ -38,20 +70,41 @@ export default function TreeContainer() {
 
   return (
     <div className="relative w-full min-h-screen">
-      {/* Tree Image */}
-      <div className="relative w-full h-screen bg-gray-200">
-        {!imageLoaded && (
+      {/* Tree Image Container */}
+      <div className="relative w-full h-screen bg-gray-200 overflow-hidden">
+        {/* Loading skeleton */}
+        {!fallbackLoaded && (
           <div className="absolute inset-0 bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
         )}
-        <Image
-          src="/baum.webp"
-          alt="Majestätische Rotbuche mit sichtbaren Wurzeln"
-          fill
-          className={`object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          priority
-          quality={85}
-          onLoad={() => setImageLoaded(true)}
-        />
+
+        {/* Fallback image (always loads first, visible immediately) */}
+        <div ref={fallbackRef} className="absolute inset-0">
+          <Image
+            src={FALLBACK_IMAGE}
+            alt="Majestätische Rotbuche mit sichtbaren Wurzeln"
+            fill
+            className={`object-cover transition-opacity duration-700 ${fallbackLoaded ? 'opacity-100' : 'opacity-0'}`}
+            priority
+            quality={85}
+            onLoad={() => setFallbackLoaded(true)}
+          />
+        </div>
+
+        {/* Seasonal image (fades in over fallback via GSAP) */}
+        <div ref={seasonalRef} className="absolute inset-0" style={{ opacity: 0 }}>
+          <Image
+            src={seasonalSrc}
+            alt={`Rotbuche im ${season === 'spring' ? 'Frühling' : season === 'summer' ? 'Sommer' : season === 'autumn' ? 'Herbst' : 'Winter'}`}
+            fill
+            className="object-cover"
+            quality={85}
+            onLoad={handleSeasonalLoad}
+            onError={handleSeasonalError}
+          />
+        </div>
+
+        {/* Seasonal particle overlay — pointer-events: none keeps hotspots clickable */}
+        <SeasonalParticles season={season} />
 
         {/* Hotspots */}
         <div className="absolute inset-0 pointer-events-none">
