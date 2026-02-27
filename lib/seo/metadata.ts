@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { COMPANY_INFO } from '../constants';
+import { stripHtml } from '../wordpress';
 import { PRIMARY_KEYWORDS, SECONDARY_KEYWORDS, getKeywordString } from './keywords';
+
+// Re-export for any consumers that imported from here
+export { stripHtml };
 
 // ============================================
 // SITE CONFIGURATION
@@ -10,19 +14,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broetzens.de';
 const SITE_NAME = COMPANY_INFO.name;
 const DEFAULT_TITLE_SUFFIX = 'Broetzens IT';
 const DEFAULT_IMAGE = '/images/og-default.jpg'; // Fallback OG image
-
-// ============================================
-// TEXT UTILITIES
-// ============================================
-
-/**
- * Strip HTML tags from a string
- * @param html - HTML string to strip
- * @returns Plain text without HTML tags
- */
-export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '');
-}
 
 /**
  * Truncate text to a specific length, ensuring it ends at a word boundary

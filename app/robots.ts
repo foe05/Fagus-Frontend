@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://broetzens.de'; // In Production anpassen!
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://broetzens.de';
 
   return {
     rules: [

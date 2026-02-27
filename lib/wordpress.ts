@@ -2,6 +2,46 @@ import type { WordPressPost, WordPressPage, WordPressCategory, WordPressTag, Wor
 import { WP_API_URL, WP_CACHE_REVALIDATE, NAVIGATION_ITEMS, FOOTER_COLUMNS } from './constants';
 
 // ============================================
+// FETCH HELPERS
+// ============================================
+
+/**
+ * Fetch all items from a paginated WP REST API endpoint.
+ * Follows X-WP-TotalPages to retrieve every page of results.
+ */
+async function fetchAllPaginated<T>(baseEndpoint: string): Promise<T[]> {
+  const all: T[] = [];
+  let page = 1;
+  let totalPages = 1;
+
+  do {
+    const separator = baseEndpoint.includes('?') ? '&' : '?';
+    const url = `${baseEndpoint}${separator}per_page=100&page=${page}`;
+
+    const response = await fetch(url, {
+      next: { revalidate: WP_CACHE_REVALIDATE },
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
+      break;
+    }
+
+    if (page === 1) {
+      const total = response.headers.get('X-WP-TotalPages');
+      if (total) totalPages = parseInt(total, 10);
+    }
+
+    const items: T[] = await response.json();
+    all.push(...items);
+    page++;
+  } while (page <= totalPages);
+
+  return all;
+}
+
+// ============================================
 // SITE SETTINGS
 // ============================================
 
@@ -76,7 +116,7 @@ export async function getPosts(limit: number = 10): Promise<WordPressPost[]> {
 export async function getPostBySlug(slug: string): Promise<WordPressPost | null> {
   try {
     const response = await fetch(
-      `${WP_API_URL}/posts?slug=${slug}&_embed`,
+      `${WP_API_URL}/posts?slug=${encodeURIComponent(slug)}&_embed`,
       {
         next: { revalidate: WP_CACHE_REVALIDATE },
         headers: {
@@ -99,28 +139,16 @@ export async function getPostBySlug(slug: string): Promise<WordPressPost | null>
 }
 
 /**
- * Get all post slugs for static site generation
+ * Get all post slugs for static site generation.
+ * Paginates automatically to handle sites with more than 100 posts.
  * @returns Array of post slugs
  */
 export async function getAllPostSlugs(): Promise<string[]> {
   try {
-    const response = await fetch(
-      `${WP_API_URL}/posts?per_page=100&_fields=slug`,
-      {
-        next: { revalidate: WP_CACHE_REVALIDATE },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    const posts = await fetchAllPaginated<{ slug: string }>(
+      `${WP_API_URL}/posts?_fields=slug`
     );
-
-    if (!response.ok) {
-      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
-      return [];
-    }
-
-    const posts = await response.json();
-    return posts.map((post: { slug: string }) => post.slug);
+    return posts.map((post) => post.slug);
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];
@@ -198,29 +226,15 @@ export function getFeaturedImage(item: WordPressPost | WordPressPage): string | 
 // ============================================
 
 /**
- * Fetch multiple pages from WordPress REST API
- * @param limit - Number of pages to fetch (default: 100)
+ * Fetch all pages from WordPress REST API.
+ * Paginates automatically to handle sites with more than 100 pages.
  * @returns Array of WordPress pages
  */
-export async function getPages(limit: number = 100): Promise<WordPressPage[]> {
+export async function getPages(): Promise<WordPressPage[]> {
   try {
-    const response = await fetch(
-      `${WP_API_URL}/pages?per_page=${limit}&_embed`,
-      {
-        next: { revalidate: WP_CACHE_REVALIDATE },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    return await fetchAllPaginated<WordPressPage>(
+      `${WP_API_URL}/pages?_embed`
     );
-
-    if (!response.ok) {
-      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
-      return [];
-    }
-
-    const pages = await response.json();
-    return pages;
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];
@@ -235,7 +249,7 @@ export async function getPages(limit: number = 100): Promise<WordPressPage[]> {
 export async function getPageBySlug(slug: string): Promise<WordPressPage | null> {
   try {
     const response = await fetch(
-      `${WP_API_URL}/pages?slug=${slug}&_embed`,
+      `${WP_API_URL}/pages?slug=${encodeURIComponent(slug)}&_embed`,
       {
         next: { revalidate: WP_CACHE_REVALIDATE },
         headers: {
@@ -290,28 +304,16 @@ export async function getChildPages(parentSlug: string): Promise<WordPressPage[]
 }
 
 /**
- * Get all page slugs for static site generation
+ * Get all page slugs for static site generation.
+ * Paginates automatically to handle sites with more than 100 pages.
  * @returns Array of page slugs
  */
 export async function getAllPageSlugs(): Promise<string[]> {
   try {
-    const response = await fetch(
-      `${WP_API_URL}/pages?per_page=100&_fields=slug`,
-      {
-        next: { revalidate: WP_CACHE_REVALIDATE },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    const pages = await fetchAllPaginated<{ slug: string }>(
+      `${WP_API_URL}/pages?_fields=slug`
     );
-
-    if (!response.ok) {
-      console.error(`WordPress API Error: ${response.status} ${response.statusText}`);
-      return [];
-    }
-
-    const pages = await response.json();
-    return pages.map((page: { slug: string }) => page.slug);
+    return pages.map((page) => page.slug);
   } catch (error) {
     console.error('WordPress API Error:', error);
     return [];
@@ -391,7 +393,7 @@ export async function getTags(limit: number = 100): Promise<WordPressTag[]> {
 export async function getPostsByTag(tagSlug: string, limit: number = 10): Promise<WordPressPost[]> {
   try {
     const tagsResponse = await fetch(
-      `${WP_API_URL}/tags?slug=${tagSlug}`,
+      `${WP_API_URL}/tags?slug=${encodeURIComponent(tagSlug)}`,
       {
         next: { revalidate: WP_CACHE_REVALIDATE },
         headers: { 'Content-Type': 'application/json' },
