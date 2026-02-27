@@ -9,6 +9,15 @@ export interface ContactFormData {
   message: string;
 }
 
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export async function sendContactEmail(data: ContactFormData) {
   try {
     // Validierung
@@ -40,12 +49,18 @@ export async function sendContactEmail(data: ContactFormData) {
       },
     });
 
+    // Escape user input for safe HTML embedding
+    const safeName = escapeHtml(data.name);
+    const safeEmail = escapeHtml(data.email);
+    const safeCompany = data.company ? escapeHtml(data.company) : '';
+    const safeMessage = escapeHtml(data.message);
+
     // E-Mail-Inhalt
     const mailOptions = {
-      from: `"${data.name}" <${process.env.SMTP_USER}>`,
+      from: `"${safeName}" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL || 'kontakt@broetzens.de',
       replyTo: data.email,
-      subject: `Neue Kontaktanfrage von ${data.name}${data.company ? ` (${data.company})` : ''}`,
+      subject: `Neue Kontaktanfrage von ${safeName}${safeCompany ? ` (${safeCompany})` : ''}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -116,28 +131,28 @@ export async function sendContactEmail(data: ContactFormData) {
               <div class="content">
                 <div class="field">
                   <div class="label">Name</div>
-                  <div class="value">${data.name}</div>
+                  <div class="value">${safeName}</div>
                 </div>
 
                 <div class="field">
                   <div class="label">E-Mail</div>
                   <div class="value">
-                    <a href="mailto:${data.email}" style="color: #3E4E3A; text-decoration: none;">
-                      ${data.email}
+                    <a href="mailto:${safeEmail}" style="color: #3E4E3A; text-decoration: none;">
+                      ${safeEmail}
                     </a>
                   </div>
                 </div>
 
-                ${data.company ? `
+                ${safeCompany ? `
                   <div class="field">
                     <div class="label">Unternehmen / Forstbetrieb</div>
-                    <div class="value">${data.company}</div>
+                    <div class="value">${safeCompany}</div>
                   </div>
                 ` : ''}
 
                 <div class="field">
                   <div class="label">Nachricht</div>
-                  <div class="value message">${data.message}</div>
+                  <div class="value message">${safeMessage}</div>
                 </div>
               </div>
 
