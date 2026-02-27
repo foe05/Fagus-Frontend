@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/seo/structured-data';
 
 const TreeContainer = dynamic(() => import('@/components/Tree/TreeContainer'), {
   loading: () => (
@@ -10,8 +11,15 @@ const TreeContainer = dynamic(() => import('@/components/Tree/TreeContainer'), {
 });
 
 export default function HomePage() {
+  const orgSchema = generateOrganizationSchema('https://broetzens.de/logo-color.webp');
+  const siteSchema = generateWebSiteSchema();
+
   return (
     <div className="pt-[70px]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([orgSchema, siteSchema]) }}
+      />
       <TreeContainer />
     </div>
   );

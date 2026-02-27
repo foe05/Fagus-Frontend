@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { getPageBySlug, getChildPages } from '@/lib/wordpress';
+import { getPageBySlug, getChildPages, stripHtml } from '@/lib/wordpress';
+import { generateProductSchema, generateOrganizationSchema } from '@/lib/seo/structured-data';
 
 const WordPressPageComponent = dynamic(() => import('@/components/WordPressPage'));
 
@@ -23,13 +24,29 @@ export default async function ProductDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const description = stripHtml(page.excerpt.rendered).trim() || page.title.rendered;
+  const productSchema = generateProductSchema(
+    page.title.rendered.replace(/<[^>]*>/g, ''),
+    description,
+    slug,
+    true,
+    'BusinessApplication'
+  );
+  const orgSchema = generateOrganizationSchema();
+
   return (
-    <WordPressPageComponent
-      page={page}
-      showBackButton={true}
-      backButtonText="Zurück zu Produkte"
-      backButtonHref="/produkte"
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([productSchema, orgSchema]) }}
+      />
+      <WordPressPageComponent
+        page={page}
+        showBackButton={true}
+        backButtonText="Zurück zu Produkte"
+        backButtonHref="/produkte"
+      />
+    </>
   );
 }
 

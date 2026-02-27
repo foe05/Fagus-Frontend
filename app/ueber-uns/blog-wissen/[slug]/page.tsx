@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPostBySlug, getAllPostSlugs, formatPostDate, getFeaturedImage } from '@/lib/wordpress';
+import { generateArticleSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data';
 
 export const revalidate = 300; // Revalidate every 5 minutes
 
@@ -27,8 +28,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const featuredImage = getFeaturedImage(post);
 
+  const articleSchema = generateArticleSchema(
+    post,
+    featuredImage || undefined,
+    'https://broetzens.de/logo-color.webp'
+  );
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Startseite', url: '/' },
+    { name: 'Blog & Wissen', url: '/ueber-uns/blog-wissen' },
+    { name: post.title.rendered.replace(/<[^>]*>/g, '') },
+  ]);
+
   return (
     <div className="pt-[70px] min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary to-primary-light text-white py-20">
         <div className="container-custom max-w-4xl">
