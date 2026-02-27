@@ -132,6 +132,29 @@ export interface WebSiteSchema extends BaseSchema {
   };
 }
 
+/**
+ * ContactPage schema for the contact page
+ */
+export interface ContactPageSchema extends BaseSchema {
+  '@type': 'ContactPage';
+  name: string;
+  description?: string;
+  url: string;
+  mainEntity?: {
+    '@type': 'Organization';
+    name: string;
+    telephone: string;
+    email: string;
+    address: {
+      '@type': 'PostalAddress';
+      streetAddress: string;
+      postalCode: string;
+      addressLocality: string;
+      addressCountry: string;
+    };
+  };
+}
+
 // ============================================
 // SITE CONFIGURATION
 // ============================================
@@ -391,6 +414,37 @@ export function generateWebSiteSchema(): WebSiteSchema {
       '@type': 'SearchAction',
       target: `${SITE_URL}/search?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+// ============================================
+// CONTACT PAGE SCHEMA
+// ============================================
+
+/**
+ * Generate ContactPage schema for the contact page
+ * @returns ContactPage schema object with embedded Organization
+ */
+export function generateContactPageSchema(): ContactPageSchema {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Kontakt - Broetzens IT Cattles & Cows',
+    description: 'Kontaktieren Sie uns für AI-First IT-Beratung für Forstbetriebe.',
+    url: `${SITE_URL}/kontakt`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: COMPANY_INFO.name,
+      telephone: COMPANY_INFO.phone,
+      email: COMPANY_INFO.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: COMPANY_INFO.address.street,
+        postalCode: COMPANY_INFO.address.zip,
+        addressLocality: COMPANY_INFO.address.city,
+        addressCountry: COMPANY_INFO.address.country,
+      },
     },
   };
 }

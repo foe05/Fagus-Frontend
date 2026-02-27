@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import Header from '@/components/Header';
 import LazyFooter from '@/components/LazyFooter';
@@ -55,6 +56,21 @@ export default async function RootLayout({
   return (
     <html lang="de" className={roboto.className}>
       <head>
+        {/*
+          Plausible Analytics — cookieless, GDPR-compliant by design.
+          No consent banner needed. Loaded directly via next/script.
+
+          UTM parameter structure for campaign landing pages:
+            ?utm_source=<platform>        e.g. linkedin, newsletter, github
+            &utm_medium=<channel>         e.g. social, email, cpc
+            &utm_campaign=<campaign-name> e.g. launch-2025, forst-digi
+            &utm_term=<keyword>           optional, for paid search terms
+            &utm_content=<variant>        optional, for A/B test variants
+
+          Plausible auto-tracks UTM params as properties on the pageview.
+          View campaign data at: https://plausible.io/broetzens.de?utm_source=...
+        */}
+
         {/* DNS Prefetch for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
@@ -67,6 +83,14 @@ export default async function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
           rel="stylesheet"
+        />
+
+        {/* Plausible Analytics — cookieless, no consent required */}
+        <Script
+          defer
+          data-domain="broetzens.de"
+          src="https://plausible.io/js/script.js"
+          strategy="afterInteractive"
         />
       </head>
       <body className="antialiased">

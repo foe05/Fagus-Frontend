@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { getPageBySlug, getChildPages } from '@/lib/wordpress';
+import { getPageBySlug, getChildPages, stripHtml } from '@/lib/wordpress';
+import { generateServiceSchema, generateOrganizationSchema } from '@/lib/seo/structured-data';
 
 const WordPressPageComponent = dynamic(() => import('@/components/WordPressPage'));
 
@@ -23,13 +24,27 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const description = stripHtml(page.excerpt.rendered).trim() || page.title.rendered;
+  const serviceSchema = generateServiceSchema(
+    page.title.rendered.replace(/<[^>]*>/g, ''),
+    description,
+    slug
+  );
+  const orgSchema = generateOrganizationSchema();
+
   return (
-    <WordPressPageComponent
-      page={page}
-      showBackButton={true}
-      backButtonText="Zurück zu Services"
-      backButtonHref="/services"
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([serviceSchema, orgSchema]) }}
+      />
+      <WordPressPageComponent
+        page={page}
+        showBackButton={true}
+        backButtonText="Zurück zu Services"
+        backButtonHref="/services"
+      />
+    </>
   );
 }
 

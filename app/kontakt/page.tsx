@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { COMPANY_INFO } from '@/lib/constants';
 import { sendContactEmail, type ContactFormData } from '@/app/actions/sendEmail';
+import { usePlausible } from '@/hooks/usePlausible';
+import JsonLd from '@/components/seo/JsonLd';
+import { generateContactPageSchema, generateOrganizationSchema } from '@/lib/seo/structured-data';
 
 export default function KontaktPage() {
   const [formState, setFormState] = useState<ContactFormData>({
@@ -15,6 +18,7 @@ export default function KontaktPage() {
     type: 'idle' | 'loading' | 'success' | 'error';
     message?: string;
   }>({ type: 'idle' });
+  const { trackEvent } = usePlausible();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +28,7 @@ export default function KontaktPage() {
       const result = await sendContactEmail(formState);
 
       if (result.success) {
+        trackEvent('Contact Form Submitted');
         setStatus({
           type: 'success',
           message: result.message,
@@ -61,8 +66,12 @@ export default function KontaktPage() {
     });
   };
 
+  const contactSchema = generateContactPageSchema();
+  const orgSchema = generateOrganizationSchema();
+
   return (
     <div className="pt-[70px] min-h-screen">
+      <JsonLd data={[contactSchema, orgSchema]} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary to-primary-light text-white py-20">
         <div className="container-custom">
