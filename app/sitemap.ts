@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next';
-import { getAllPostSlugs, getAllPageSlugs } from '@/lib/wordpress';
+import { getAllPostSlugs, getAllPagesWithPaths } from '@/lib/wordpress';
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://broetzens.de';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://broetzens.de'; // In Production anpassen!
-
   // Statische Routen
   const staticRoutes: MetadataRoute.Sitemap = [
     {
@@ -36,25 +36,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly',
       priority: 0.7,
     },
-    // Service-Detailseiten
     {
-      url: `${baseUrl}/services/digitalisierungsstrategie`,
+      url: `${baseUrl}/themen`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    // Produkt-Detailseiten
-    {
-      url: `${baseUrl}/produkte/hegegemeinschaft-management`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    // Blog-Übersicht
-    {
-      url: `${baseUrl}/ueber-uns/blog-wissen`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
       priority: 0.7,
     },
   ];
@@ -68,13 +53,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  // WordPress-Seiten
-  const pageSlugs = await getAllPageSlugs();
-  const wordpressPages: MetadataRoute.Sitemap = pageSlugs.map((slug) => ({
-    url: `${baseUrl}/${slug}`,
-    lastModified: new Date(),
+  // WordPress-Seiten (with full hierarchical paths)
+  const pagesWithPaths = await getAllPagesWithPaths();
+  const wordpressPages: MetadataRoute.Sitemap = pagesWithPaths.map(({ slug, page }) => ({
+    url: `${baseUrl}/${slug.join('/')}`,
+    lastModified: new Date(page.modified),
     changeFrequency: 'monthly',
-    priority: 0.7,
+    priority: slug.length === 1 ? 0.7 : 0.6,
   }));
 
   return [...staticRoutes, ...blogPosts, ...wordpressPages];
