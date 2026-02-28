@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getChildPages, stripHtml, getFeaturedImage } from '@/lib/wordpress';
+import { getChildPages, getPageBySlug, stripHtml, getFeaturedImage } from '@/lib/wordpress';
 
 export const revalidate = 300;
 
@@ -31,23 +31,80 @@ const fallbackServices = [
   },
 ];
 
+export async function generateMetadata() {
+  const wpPage = await getPageBySlug('services');
+
+  if (wpPage) {
+    const title = wpPage.title.rendered.replace(/<[^>]*>/g, '');
+    const description = stripHtml(wpPage.excerpt.rendered).trim();
+    return {
+      title: `${title} - Broetzens IT`,
+      ...(description && { description }),
+    };
+  }
+
+  return {
+    title: 'Unsere Services - Broetzens IT',
+    description: 'AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten Sie von der Strategie bis zur erfolgreichen Umsetzung.',
+  };
+}
+
 export default async function ServicesPage() {
-  const wpChildren = await getChildPages('services');
+  const [wpPage, wpChildren] = await Promise.all([
+    getPageBySlug('services'),
+    getChildPages('services'),
+  ]);
+
+  const hasWpContent = wpPage && wpPage.content.rendered.replace(/<[^>]*>/g, '').trim().length > 0;
 
   return (
     <div className="pt-[70px] min-h-screen bg-bg-light">
-      <div className="container-custom py-20">
-        {/* Header */}
+      {/* Header */}
+      <div className="container-custom py-20 pb-0">
         <div className="max-w-3xl mb-16">
-          <h1 className="display-medium text-text-dark mb-6">
-            Unsere Services
-          </h1>
-          <p className="body-large text-text-medium">
-            AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten Sie
-            von der Strategie bis zur erfolgreichen Umsetzung.
-          </p>
+          {wpPage ? (
+            <h1
+              className="display-medium text-text-dark mb-6"
+              dangerouslySetInnerHTML={{ __html: wpPage.title.rendered }}
+            />
+          ) : (
+            <h1 className="display-medium text-text-dark mb-6">
+              Unsere Services
+            </h1>
+          )}
+          {!hasWpContent && (
+            <p className="body-large text-text-medium">
+              AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten Sie
+              von der Strategie bis zur erfolgreichen Umsetzung.
+            </p>
+          )}
         </div>
+      </div>
 
+      {/* WordPress Page Content */}
+      {hasWpContent && (
+        <article className="pb-12 bg-bg-light">
+          <div className="container-custom max-w-4xl">
+            <div
+              className="prose prose-lg max-w-none
+                prose-headings:text-text-dark
+                prose-h2:headline-medium
+                prose-h3:headline-small
+                prose-p:text-text-medium prose-p:body-large
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-text-dark
+                prose-ul:text-text-medium
+                prose-ol:text-text-medium
+                prose-li:body-medium
+                prose-img:rounded-xl
+                prose-img:shadow-lg"
+              dangerouslySetInnerHTML={{ __html: wpPage!.content.rendered }}
+            />
+          </div>
+        </article>
+      )}
+
+      <div className="container-custom py-20">
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 gap-8">
           {wpChildren.length > 0 ? (
