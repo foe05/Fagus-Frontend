@@ -14,13 +14,8 @@ services:
       - WP_URL=http://91.99.188.249:3080
       # Next.js WordPress API (intern im Container: Next.js -> Nginx -> PHP-FPM)
       - WP_API_URL=http://127.0.0.1/wp-json/wp/v2
-      # E-Mail / SMTP (fuer Kontaktformular)
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_SECURE=false
-      - SMTP_USER=
-      - SMTP_PASS=
-      - CONTACT_EMAIL=hallo@broetzens.de
+      # Kontaktformular: E-Mails werden via wp_mail() / WP Mail SMTP gesendet.
+      # Empfaenger konfigurierbar als WP-Option (fagus_contact_email), Standard: hallo@broetzens.de
       # WordPress Debug (optional)
       # - WP_DEBUG=true
     networks:
