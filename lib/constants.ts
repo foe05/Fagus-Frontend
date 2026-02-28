@@ -139,11 +139,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     icon: 'computer',
   },
   {
-    label: 'Referenzen',
-    href: '/ueber-uns/referenzen',
-    icon: 'star',
-  },
-  {
     label: 'Wissen',
     href: '/ueber-uns/blog-wissen',
     icon: 'menu_book',
