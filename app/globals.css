@@ -454,3 +454,427 @@ a:hover {
   font-weight: bold;
   margin-right: 0.75rem;
 }
+
+/* ============================================
+   WP-CONTENT: WordPress Gutenberg Layout-Klassen
+   Verwendung: Klasse im Gutenberg-Block unter
+   "Erweitert → Zusätzliche CSS-Klasse(n)" eintragen
+   ============================================ */
+
+/* ── .wp-content – Container-Reset ───────────
+   Macht Tailwind-Preflight für Überschriften,
+   Absätze und Listen rückgängig, damit WordPress-
+   HTML korrekt dargestellt wird.
+   ────────────────────────────────────────────── */
+.wp-content h2 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 2.5rem 0 1rem;
+}
+
+.wp-content h3 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 2rem 0 0.75rem;
+}
+
+.wp-content h4 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.wp-content p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  color: var(--text-medium);
+  margin: 0 0 1rem;
+}
+
+.wp-content ul,
+.wp-content ol {
+  padding-left: 1.5rem;
+  margin: 0 0 1rem;
+  color: var(--text-medium);
+}
+
+.wp-content ul {
+  list-style-type: disc;
+}
+
+.wp-content ol {
+  list-style-type: decimal;
+}
+
+.wp-content li {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  margin-bottom: 0.25rem;
+}
+
+.wp-content a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.wp-content a:hover {
+  text-decoration: underline;
+}
+
+.wp-content strong {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.wp-content img {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 767px) {
+  .wp-content h2 {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
+/* ── .steps-grid – 2×2 Kachel-Grid ──────────
+   Referenz: /services/digitalisierungsstrategie
+   „Unser Ansatz"-Sektion
+   Original: grid md:grid-cols-2 gap-8
+   ────────────────────────────────────────────── */
+.wp-content .steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .wp-content .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── .step-card – Einzelne Step-Kachel ───────
+   Enthält .step-icon (Icon-Kreis) + Textinhalt.
+   Original: flex gap-4 mit w-12 h-12 Icon-Kreis
+   ────────────────────────────────────────────── */
+.wp-content .step-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.wp-content .step-icon {
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  border-radius: 9999px;
+  background-color: rgba(62, 78, 58, 0.1); /* --primary bei 10% Deckkraft */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.wp-content .step-card h3,
+.wp-content .step-card h4 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 0 0 0.5rem;
+}
+
+.wp-content .step-card p {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: var(--text-medium);
+  margin: 0;
+}
+
+/* ── .feature-bubbles – 3-Spalten Grid ───────
+   Referenz: /ueber-uns – 3 Bubbles
+   (Forst-Expertise, Technologie, Partnerschaft)
+   Original: grid md:grid-cols-3 gap-8 mb-16
+   ────────────────────────────────────────────── */
+.wp-content .feature-bubbles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .wp-content .feature-bubbles {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── .feature-bubble – Einzelne Bubble-Karte ──
+   Zentrierter Inhalt mit Icon-Kreis, Titel, Text.
+   Original: text-center, p-8 bg-bg-light rounded-2xl
+   ────────────────────────────────────────────── */
+.wp-content .feature-bubble {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg-light);
+  border-radius: 1rem;
+}
+
+.wp-content .bubble-icon {
+  width: 4rem;
+  height: 4rem;
+  min-width: 4rem;
+  border-radius: 9999px;
+  background-color: rgba(62, 78, 58, 0.1); /* --primary bei 10% Deckkraft */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: var(--primary);
+  font-size: 32px;
+}
+
+.wp-content .feature-bubble h3 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 0 0 0.5rem;
+}
+
+.wp-content .feature-bubble p {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: var(--text-medium);
+  margin: 0;
+}
+
+/* ── .nav-cards – Link-Kachel Grid ───────────
+   Referenz: /ueber-uns „Mehr über uns erfahren"
+   Original: grid md:grid-cols-2 lg:grid-cols-4 gap-6
+   ────────────────────────────────────────────── */
+.wp-content .nav-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .wp-content .nav-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .wp-content .nav-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ── .nav-card – Einzelne Link-Kachel ────────
+   Icon + Titel + Text mit Hover-Effekt.
+   Original: group bg-white rounded-2xl p-6
+   hover:shadow-xl hover:-translate-y-1
+   ────────────────────────────────────────────── */
+.wp-content .nav-card {
+  background-color: var(--bg-surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.wp-content .nav-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  text-decoration: none;
+}
+
+.wp-content .nav-card-icon {
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  border-radius: 9999px;
+  background-color: rgba(62, 78, 58, 0.1); /* --primary bei 10% Deckkraft */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+  color: var(--primary);
+  font-size: 28px;
+}
+
+.wp-content .nav-card:hover .nav-card-icon {
+  background-color: rgba(62, 78, 58, 0.2); /* --primary bei 20% Deckkraft */
+}
+
+.wp-content .nav-card h3 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 0 0 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.wp-content .nav-card:hover h3 {
+  color: var(--primary);
+}
+
+.wp-content .nav-card p {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: var(--text-medium);
+  margin: 0;
+}
+
+/* ── .benefits-list – Checkmark-Liste ────────
+   Referenz: /services/digitalisierungsstrategie
+   „Ihre Vorteile" und /produkte/hegegemeinschaft-
+   management „Technologie"
+   Original: space-y-3, flex items-start gap-3, ✓
+   ────────────────────────────────────────────── */
+.wp-content .benefits-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 3rem;
+}
+
+.wp-content .benefits-list li {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  color: var(--text-medium);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.wp-content .benefits-list li::before {
+  content: "\2713";
+  color: #16a34a;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+/* ── .cta-box – Call-to-Action Box ───────────
+   Referenz: /services/digitalisierungsstrategie,
+   /produkte/hegegemeinschaft-management,
+   /ueber-uns/team-werte – CTA-Sektionen
+   Original: mt-16 p-8 bg-bg-light rounded-2xl
+   text-center
+   ────────────────────────────────────────────── */
+.wp-content .cta-box {
+  margin-top: 4rem;
+  padding: 2rem;
+  background-color: var(--bg-light);
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.wp-content .cta-box h3 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+  color: var(--text-dark);
+  margin: 0 0 1rem;
+}
+
+.wp-content .cta-box p {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  color: var(--text-medium);
+  margin: 0 0 1.5rem;
+}
+
+.wp-content .cta-box a,
+.wp-content .cta-box .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.wp-content .cta-box a:hover,
+.wp-content .cta-box .wp-block-button__link:hover {
+  background-color: var(--primary-light);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  color: white;
+  text-decoration: none;
+}
+
+/* ── .icon-text – Icon + Text inline ─────────
+   Icon links, Text rechts (inline-Variante für
+   kleinere Info-Elemente).
+   Original: flex items-center gap-2
+   ────────────────────────────────────────────── */
+.wp-content .icon-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wp-content .icon-text .material-symbols-outlined {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ── Responsive Mobile-Anpassungen ───────────
+   Grids fallen auf 1 Spalte zurück (über
+   grid-template-columns: 1fr als Default).
+   Zusätzliche Feinabstimmung für Mobile:
+   ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .wp-content .cta-box {
+    padding: 1.5rem;
+  }
+
+  .wp-content .feature-bubble {
+    padding: 1.5rem;
+  }
+
+  .wp-content .nav-card {
+    padding: 1.25rem;
+  }
+}
