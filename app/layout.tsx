@@ -71,19 +71,12 @@ export default async function RootLayout({
           View campaign data at: https://plausible.io/broetzens.de?utm_source=...
         */}
 
-        {/* DNS Prefetch for external resources */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-        {/* Preconnect to Google Fonts for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Material Symbols Outlined Icons */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
-          rel="stylesheet"
-        />
+        {/*
+          Material Symbols Outlined sowie Roboto werden lokal ausgeliefert
+          (siehe app/globals.css @font-face bzw. next/font). Es werden
+          bewusst KEINE Schriften/Stylesheets von Google-Servern geladen
+          — kein DNS-Prefetch/Preconnect zu fonts.googleapis.com nötig.
+        */}
 
         {/* Plausible Analytics — cookieless, no consent required */}
         <Script

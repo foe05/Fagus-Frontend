@@ -196,6 +196,16 @@ body {
 /* ============================================
    MATERIAL ICONS SETUP
    ============================================ */
+/* Lokal gehostet (DSGVO-konform, kein Aufruf von Google-Servern).
+   Font-Datei: public/fonts/material-symbols-outlined.woff2 */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url('/fonts/material-symbols-outlined.woff2') format('woff2');
+}
+
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: 300;
