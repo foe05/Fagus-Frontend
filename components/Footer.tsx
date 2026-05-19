@@ -16,6 +16,36 @@ export default function Footer({ footerColumns }: FooterProps) {
   return (
     <footer role="contentinfo" className="bg-primary text-white pt-16 pb-8">
       <div className="container-custom">
+        {/* Newsletter-Hinweis */}
+        <div className="mb-12 pb-12 border-b border-white/20">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-start gap-4">
+              <span
+                className="material-symbols-outlined text-[32px] text-white/80"
+                aria-hidden="true"
+              >
+                forward_to_inbox
+              </span>
+              <div className="max-w-xl">
+                <h3 className="title-medium mb-1">Newsletter abonnieren</h3>
+                <p className="body-small text-white/80">
+                  Praxiswissen zu Digitalisierung, KI und Forst-IT – direkt in dein
+                  Postfach. Themen frei wählbar, jederzeit abbestellbar.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/newsletter/abonnieren"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary rounded-full label-medium whitespace-nowrap hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+            >
+              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                mail
+              </span>
+              <span>Jetzt anmelden</span>
+            </Link>
+          </div>
+        </div>
+
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Column 1: About Us */}
@@ -80,6 +110,31 @@ export default function Footer({ footerColumns }: FooterProps) {
               </ul>
             </nav>
           ))}
+        </div>
+
+        {/* Compliance Badges */}
+        <div className="pt-8 border-t border-white/20 flex flex-wrap justify-center items-center gap-x-10 gap-y-6 mb-8">
+          <Image
+            src="/EU_AI_ACt_Compliant.svg"
+            alt="EU AI Act Compliant"
+            width={134}
+            height={54}
+            className="h-12 w-auto"
+          />
+          <Image
+            src="/GDPR_Compliant.svg"
+            alt="GDPR / DSGVO Compliant"
+            width={166}
+            height={54}
+            className="h-12 w-auto"
+          />
+          <Image
+            src="/HostedInGermany.svg"
+            alt="Hosted in Germany"
+            width={116}
+            height={53}
+            className="h-12 w-auto"
+          />
         </div>
 
         {/* Footer Bottom */}

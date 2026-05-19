@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getChildPages, getPageBySlug, stripHtml } from '@/lib/wordpress';
+import { PageHero, Section, CardGrid, FeatureCard, ContentContainer } from '@/components/ui';
 
 export const revalidate = 300;
 
@@ -8,19 +9,13 @@ const fallbackLinks = [
     title: 'Team & Werte',
     href: '/ueber-uns/team-werte',
     icon: 'group',
-    description: 'Lernen Sie unser Team kennen',
+    description: 'Lern unser Team kennen',
   },
   {
     title: 'AI-First Ansatz',
     href: '/ueber-uns/ai-first-ansatz',
     icon: 'psychology',
     description: 'Wie wir KI einsetzen',
-  },
-  {
-    title: 'Referenzen',
-    href: '/ueber-uns/referenzen',
-    icon: 'star',
-    description: 'Erfolgreiche Projekte',
   },
   {
     title: 'Blog & Wissen',
@@ -56,37 +51,28 @@ export default async function UeberUnsPage() {
 
   const hasWpContent = wpPage && wpPage.content.rendered.replace(/<[^>]*>/g, '').trim().length > 0;
 
-  // Build link cards: WordPress children or fallback
-  const linkCards = wpChildren.length > 0
-    ? wpChildren.map((page) => ({
+  // Build link cards: WordPress children or fallback.
+  // 'referenzen' is reachable via direct URL only — never surfaced in navigation.
+  const visibleChildren = wpChildren.filter((page) => page.slug !== 'referenzen');
+  const linkCards = visibleChildren.length > 0
+    ? visibleChildren.map((page) => ({
         title: page.title.rendered,
         href: `/ueber-uns/${page.slug}`,
         description: stripHtml(page.excerpt.rendered).trim() || '',
       }))
     : fallbackLinks;
 
+  // Determine grid columns (2, 3, or 4)
+  const gridColumns: 2 | 3 | 4 = linkCards.length >= 4 ? 4 : (linkCards.length === 2 ? 2 : 3);
+
+  const titleText = wpPage ? wpPage.title.rendered.replace(/<[^>]*>/g, '') : 'Über uns';
+
   return (
     <div className="pt-[70px] min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary to-primary-light text-white py-20">
-        <div className="container-custom">
-          <div className="max-w-3xl">
-            {wpPage ? (
-              <h1
-                className="display-medium mb-6"
-                dangerouslySetInnerHTML={{ __html: wpPage.title.rendered }}
-              />
-            ) : (
-              <h1 className="display-medium mb-6">Über uns</h1>
-            )}
-            {!hasWpContent && (
-              <p className="headline-small font-normal opacity-90">
-                Verwurzelt in Tradition, gewachsen durch Innovation
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
+      <PageHero
+        title={titleText}
+        subtitle={!hasWpContent ? 'Verwurzelt in Tradition, gewachsen durch Innovation' : undefined}
+      />
 
       {/* WordPress Page Content (replaces hardcoded story when available) */}
       {hasWpContent ? (
@@ -110,8 +96,8 @@ export default async function UeberUnsPage() {
           </div>
         </article>
       ) : (
-        <section className="py-20 bg-white">
-          <div className="container-custom max-w-4xl">
+        <Section tone="default">
+          <ContentContainer size="md">
             <h2 className="headline-large text-text-dark mb-6">Unsere Geschichte</h2>
             <p className="body-large text-text-medium mb-6">
               Broetzens IT Cattles & Cows entstand aus der Erkenntnis, dass die Forstwirtschaft
@@ -153,18 +139,20 @@ export default async function UeberUnsPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
+          </ContentContainer>
+        </Section>
       )}
 
       {/* Quick Links - dynamic from WordPress or fallback */}
-      <section className="py-20 bg-bg-light">
-        <div className="container-custom">
-          <h2 className="headline-large text-text-dark mb-12 text-center">
+      <Section tone="light">
+        <div className="text-center mb-12">
+          <h2 className="headline-large text-text-dark">
             Mehr über uns erfahren
           </h2>
-
-          <div className={`grid md:grid-cols-2 ${linkCards.length >= 4 ? 'lg:grid-cols-4' : `lg:grid-cols-${Math.min(linkCards.length, 3)}`} gap-6 max-w-6xl mx-auto`}>
+        </div>
+        {visibleChildren.length > 0 ? (
+          // WordPress children: preserve HTML rendering of titles
+          <div className={`grid grid-cols-1 md:grid-cols-2 ${gridColumns === 4 ? 'lg:grid-cols-4' : gridColumns === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'} gap-6 max-w-6xl mx-auto`}>
             {linkCards.map((link) => (
               <Link
                 key={link.href}
@@ -186,8 +174,66 @@ export default async function UeberUnsPage() {
               </Link>
             ))}
           </div>
+        ) : (
+          <CardGrid columns={gridColumns} gap="md">
+            {fallbackLinks.map((link) => (
+              <FeatureCard
+                key={link.href}
+                title={link.title}
+                description={link.description}
+                icon={link.icon}
+                href={link.href}
+              />
+            ))}
+          </CardGrid>
+        )}
+
+        {/* Newsletter- & Blog-Hinweis */}
+        <div className="max-w-6xl mx-auto mt-12">
+          <div className="bg-primary text-white rounded-2xl p-8 md:p-10 flex flex-col gap-8 md:flex-row md:items-center">
+            <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+              <span className="material-symbols-outlined text-[32px]" aria-hidden="true">
+                rss_feed
+              </span>
+            </div>
+            <div className="flex-1">
+              <h3 className="title-large mb-2">Themen abonnieren statt suchen</h3>
+              <p className="body-medium text-white/85">
+                In{' '}
+                <Link
+                  href="/ueber-uns/blog-wissen"
+                  className="underline underline-offset-2 hover:text-white"
+                >
+                  Blog &amp; Wissen
+                </Link>{' '}
+                teilen wir regelmäßig Praxiswissen rund um Digitalisierung und KI in
+                der Forstwirtschaft. Mit unserem Newsletter erhältst du neue Beiträge
+                zu deinen Wunschthemen automatisch ins Postfach.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row flex-shrink-0">
+              <Link
+                href="/ueber-uns/blog-wissen"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-white/40 text-white rounded-full label-medium whitespace-nowrap hover:bg-white/10 transition-all duration-300"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                  menu_book
+                </span>
+                <span>Zum Blog</span>
+              </Link>
+              <Link
+                href="/newsletter/abonnieren"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-primary rounded-full label-medium whitespace-nowrap hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+              >
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">
+                  mail
+                </span>
+                <span>Newsletter abonnieren</span>
+              </Link>
+            </div>
+          </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { COMPANY_INFO } from '@/lib/constants';
 import { sendContactEmail, type ContactFormData } from '@/app/actions/sendEmail';
 import { usePlausible } from '@/hooks/usePlausible';
@@ -53,7 +54,7 @@ export default function KontaktPage() {
     } catch (error) {
       setStatus({
         type: 'error',
-        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.',
       });
       setTimeout(() => setStatus({ type: 'idle' }), 8000);
     }
@@ -78,7 +79,7 @@ export default function KontaktPage() {
           <div className="max-w-3xl">
             <h1 className="display-medium mb-6">Kontakt</h1>
             <p className="headline-small font-normal opacity-90">
-              Lassen Sie uns über Ihr Projekt sprechen
+              Lass uns über dein Projekt sprechen
             </p>
           </div>
         </div>
@@ -91,10 +92,10 @@ export default function KontaktPage() {
             {/* Contact Form */}
             <div>
               <h2 className="headline-large text-text-dark mb-6">
-                Schreiben Sie uns
+                Schreib uns
               </h2>
               <p className="body-large text-text-medium mb-8">
-                Füllen Sie das Formular aus und wir melden uns innerhalb von 24 Stunden bei Ihnen.
+                Fülle das Formular aus und wir melden uns innerhalb von 24 Stunden bei dir.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -261,7 +262,7 @@ export default function KontaktPage() {
                   Erstgespräch vereinbaren
                 </h3>
                 <p className="body-medium text-text-medium mb-6">
-                  Buchen Sie direkt einen Termin für ein kostenloses 30-minütiges Beratungsgespräch.
+                  Buche direkt einen Termin für ein kostenloses 30-minütiges Beratungsgespräch.
                 </p>
                 <a
                   href="https://calendly.com/johannes-broetzens/30min"
@@ -272,6 +273,25 @@ export default function KontaktPage() {
                   <span className="material-symbols-outlined">calendar_month</span>
                   <span>Termin buchen</span>
                 </a>
+              </div>
+
+              {/* Newsletter-Hinweis */}
+              <div className="mt-6 p-8 bg-bg-light rounded-2xl">
+                <h3 className="headline-small text-text-dark mb-4">
+                  Newsletter abonnieren
+                </h3>
+                <p className="body-medium text-text-medium mb-6">
+                  Noch kein konkretes Projekt, aber neugierig? Erhalte Praxiswissen zu
+                  Digitalisierung, KI und Forst-IT bequem per E-Mail – Themen frei
+                  wählbar, jederzeit abbestellbar.
+                </p>
+                <Link
+                  href="/newsletter/abonnieren"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-primary text-primary rounded-full label-large hover:bg-primary hover:text-white transition-all duration-300"
+                >
+                  <span className="material-symbols-outlined">mail</span>
+                  <span>Zum Newsletter</span>
+                </Link>
               </div>
             </div>
           </div>
