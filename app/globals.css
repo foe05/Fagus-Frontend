@@ -50,22 +50,28 @@
   font-weight: 400;
 }
 
-/* Headline - Sektions-Überschriften */
-.headline-large {
+/* Headline - Sektions-Überschriften.
+   Die `.prose h*`-Selektoren bringen die MD3-Typo auch in von WordPress
+   gelieferte Inhalte (gerendert via @tailwindcss/typography `prose`).
+   Abstände/Vertikalrhythmus bleiben beim prose-Plugin. */
+.headline-large,
+.prose h1 {
   font-family: 'Roboto', sans-serif;
   font-size: 32px;
   line-height: 40px;
   font-weight: 400;
 }
 
-.headline-medium {
+.headline-medium,
+.prose h2 {
   font-family: 'Roboto', sans-serif;
   font-size: 28px;
   line-height: 36px;
   font-weight: 400;
 }
 
-.headline-small {
+.headline-small,
+.prose h3 {
   font-family: 'Roboto', sans-serif;
   font-size: 24px;
   line-height: 32px;
@@ -73,7 +79,8 @@
 }
 
 /* Title - Überschriften in Cards */
-.title-large {
+.title-large,
+.prose h4 {
   font-family: 'Roboto', sans-serif;
   font-size: 22px;
   line-height: 28px;
@@ -161,12 +168,14 @@
     line-height: 36px;
   }
 
-  .headline-large {
+  .headline-large,
+  .prose h1 {
     font-size: 24px;
     line-height: 32px;
   }
 
-  .headline-medium {
+  .headline-medium,
+  .prose h2 {
     font-size: 22px;
     line-height: 28px;
   }
