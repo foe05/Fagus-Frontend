@@ -52,7 +52,7 @@ export default function NewsletterForm({ variant = 'full', className = '' }: New
     } catch (error) {
       setStatus({
         type: 'error',
-        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.',
       });
       setTimeout(() => setStatus({ type: 'idle' }), 8000);
     }
@@ -98,7 +98,7 @@ export default function NewsletterForm({ variant = 'full', className = '' }: New
               value={formState.email}
               onChange={handleEmailChange}
               disabled={status.type === 'loading'}
-              placeholder="ihre@email.de"
+              placeholder="deine@email.de"
               className="w-full px-4 py-2 border border-border-light rounded-lg body-medium focus:outline-none focus:border-primary transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
             />
           </div>
@@ -195,7 +195,7 @@ export default function NewsletterForm({ variant = 'full', className = '' }: New
             Interessengebiete (optional)
           </label>
           <p className="body-medium text-text-medium mb-4">
-            Wählen Sie die Themen aus, über die Sie informiert werden möchten:
+            Wähle die Themen aus, über die du informiert werden möchtest:
           </p>
           <div className="space-y-3">
             {NEWSLETTER_TOPICS.map((topic) => (

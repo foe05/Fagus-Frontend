@@ -27,14 +27,14 @@ function fagus_handle_contact_form(WP_REST_Request $request) {
     if (empty($name) || empty($email) || empty($message)) {
         return new WP_REST_Response([
             'success' => false,
-            'error'   => 'Bitte füllen Sie alle Pflichtfelder aus.',
+            'error'   => 'Bitte fülle alle Pflichtfelder aus.',
         ], 400);
     }
 
     if (!is_email($email)) {
         return new WP_REST_Response([
             'success' => false,
-            'error'   => 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+            'error'   => 'Bitte gib eine gültige E-Mail-Adresse ein.',
         ], 400);
     }
 
@@ -46,7 +46,7 @@ function fagus_handle_contact_form(WP_REST_Request $request) {
     if ($attempts >= 5) {
         return new WP_REST_Response([
             'success' => false,
-            'error'   => 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.',
+            'error'   => 'Zu viele Anfragen. Bitte versuche es später erneut.',
         ], 429);
     }
 
@@ -129,12 +129,12 @@ HTML;
     if ($sent) {
         return new WP_REST_Response([
             'success' => true,
-            'message' => 'Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.',
+            'message' => 'Vielen Dank! Wir haben deine Nachricht erhalten und melden uns in Kürze bei dir.',
         ], 200);
     }
 
     return new WP_REST_Response([
         'success' => false,
-        'error'   => 'Die E-Mail konnte nicht gesendet werden. Bitte kontaktieren Sie uns direkt unter hallo@broetzens.de.',
+        'error'   => 'Die E-Mail konnte nicht gesendet werden. Bitte kontaktiere uns direkt unter hallo@broetzens.de.',
     ], 500);
 }

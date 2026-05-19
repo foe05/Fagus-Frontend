@@ -38,3 +38,12 @@ next-env.d.ts
 
 # Auto Claude data directory
 .auto-claude/
+
+# Local Claude Code / ruflo tooling (not project code)
+.claude-flow/
+.claude/agents/
+.claude/commands/
+.claude/helpers/
+.claude/skills/
+.claude/scheduled_tasks.lock
+.mcp.json

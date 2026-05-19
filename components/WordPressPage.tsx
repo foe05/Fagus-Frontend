@@ -101,11 +101,11 @@ export default function WordPressPageComponent({
           {/* CTA */}
           <div className="mt-16 p-8 bg-bg-light rounded-2xl text-center">
             <h3 className="headline-small text-text-dark mb-4">
-              Haben Sie Fragen?
+              Hast du Fragen?
             </h3>
             <p className="body-large text-text-medium mb-6">
-              Wir beraten Sie gerne zu Digitalisierung und modernen Lösungen
-              für Ihren Forstbetrieb.
+              Wir beraten dich gerne zu Digitalisierung und modernen Lösungen
+              für deinen Forstbetrieb.
             </p>
             <Link
               href="/kontakt"

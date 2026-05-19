@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getChildPages, getPageBySlug, stripHtml, getFeaturedImage } from '@/lib/wordpress';
+import { CardGrid, FeatureCard } from '@/components/ui';
 
 export const revalidate = 300;
 
@@ -45,7 +46,7 @@ export async function generateMetadata() {
 
   return {
     title: 'Unsere Services - Broetzens IT',
-    description: 'AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten Sie von der Strategie bis zur erfolgreichen Umsetzung.',
+    description: 'AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten dich von der Strategie bis zur erfolgreichen Umsetzung.',
   };
 }
 
@@ -74,7 +75,7 @@ export default async function ServicesPage() {
           )}
           {!hasWpContent && (
             <p className="body-large text-text-medium">
-              AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten Sie
+              AI-First Beratung und Entwicklung für Forstbetriebe. Wir begleiten dich
               von der Strategie bis zur erfolgreichen Umsetzung.
             </p>
           )}
@@ -105,10 +106,9 @@ export default async function ServicesPage() {
       )}
 
       <div className="container-custom py-20">
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {wpChildren.length > 0 ? (
-            wpChildren.map((page) => {
+        {wpChildren.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {wpChildren.map((page) => {
               const image = getFeaturedImage(page);
               const excerpt = stripHtml(page.excerpt.rendered).trim();
               return (
@@ -144,37 +144,21 @@ export default async function ServicesPage() {
                   </div>
                 </Link>
               );
-            })
-          ) : (
-            fallbackServices.map((service) => (
-              <Link
+            })}
+          </div>
+        ) : (
+          <CardGrid columns={2} gap="lg">
+            {fallbackServices.map((service) => (
+              <FeatureCard
                 key={service.slug}
+                title={service.title}
+                description={service.description}
+                icon={service.icon}
                 href={`/services/${service.slug}`}
-                className="group bg-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-                    <span className="material-symbols-outlined text-primary text-[28px]">
-                      {service.icon}
-                    </span>
-                  </div>
-                  <h2 className="headline-small text-text-dark group-hover:text-primary transition-colors">
-                    {service.title}
-                  </h2>
-                </div>
-                <p className="body-large text-text-medium mb-6">
-                  {service.description}
-                </p>
-                <div className="mt-6 flex items-center gap-2 label-large text-primary">
-                  <span>Mehr erfahren</span>
-                  <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">
-                    arrow_forward
-                  </span>
-                </div>
-              </Link>
-            ))
-          )}
-        </div>
+              />
+            ))}
+          </CardGrid>
+        )}
       </div>
     </div>
   );

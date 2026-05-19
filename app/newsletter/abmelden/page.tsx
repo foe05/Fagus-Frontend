@@ -50,7 +50,7 @@ function AbmeldenContent() {
     } catch (error) {
       setStatus({
         type: 'error',
-        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+        message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.',
       });
       setTimeout(() => setStatus({ type: 'idle' }), 8000);
     }
@@ -68,7 +68,7 @@ function AbmeldenContent() {
           <div className="max-w-3xl">
             <h1 className="display-medium mb-6">Newsletter abmelden</h1>
             <p className="headline-small font-normal opacity-90">
-              Schade, dass Sie gehen möchten
+              Schade, dass du gehen möchtest
             </p>
           </div>
         </div>
@@ -85,8 +85,8 @@ function AbmeldenContent() {
               Newsletter-Abmeldung
             </h2>
             <p className="body-large text-text-medium">
-              Wir bedauern, dass Sie unseren Newsletter nicht mehr erhalten möchten.
-              Bestätigen Sie Ihre E-Mail-Adresse, um sich abzumelden.
+              Wir bedauern, dass du unseren Newsletter nicht mehr erhalten möchtest.
+              Bestätige deine E-Mail-Adresse, um dich abzumelden.
             </p>
           </div>
 
@@ -104,7 +104,7 @@ function AbmeldenContent() {
                   value={email}
                   onChange={handleChange}
                   disabled={status.type === 'loading' || status.type === 'success'}
-                  placeholder="ihre.email@beispiel.de"
+                  placeholder="deine.email@beispiel.de"
                   className="w-full px-4 py-3 border border-border-light rounded-lg body-large focus:outline-none focus:border-primary transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
               </div>
@@ -151,10 +151,10 @@ function AbmeldenContent() {
             {status.type !== 'success' && (
               <div className="mt-8 p-6 bg-bg-light rounded-lg">
                 <h3 className="title-medium text-text-dark mb-2">
-                  Möchten Sie stattdessen Ihre Präferenzen anpassen?
+                  Möchtest du stattdessen deine Präferenzen anpassen?
                 </h3>
                 <p className="body-medium text-text-medium mb-4">
-                  Falls Sie nur bestimmte Themen nicht mehr erhalten möchten, können Sie auch Ihre Newsletter-Einstellungen anpassen.
+                  Falls du nur bestimmte Themen nicht mehr erhalten möchtest, kannst du auch deine Newsletter-Einstellungen anpassen.
                 </p>
                 <Link
                   href="/newsletter"
@@ -169,7 +169,7 @@ function AbmeldenContent() {
             {status.type === 'success' && (
               <div className="mt-8 p-6 bg-primary/5 rounded-lg text-center">
                 <p className="body-medium text-text-medium mb-4">
-                  Sie können sich jederzeit wieder anmelden.
+                  Du kannst dich jederzeit wieder anmelden.
                 </p>
                 <Link
                   href="/newsletter"

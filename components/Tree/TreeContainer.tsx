@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { HOTSPOTS } from '@/lib/constants';
@@ -10,11 +9,6 @@ import { getCurrentSeason, SEASON_IMAGES, FALLBACK_IMAGE } from '@/lib/seasons';
 import { usePlausible } from '@/hooks/usePlausible';
 import Hotspot from './Hotspot';
 import Popup from './Popup';
-
-// Lazy-load particles — not critical for first paint
-const SeasonalParticles = dynamic(() => import('./SeasonalParticles'), {
-  ssr: false,
-});
 
 export default function TreeContainer() {
   const [selectedHotspot, setSelectedHotspot] = useState<HotspotType | null>(null);
@@ -102,9 +96,6 @@ export default function TreeContainer() {
             onError={handleSeasonalError}
           />
         </div>
-
-        {/* Seasonal particle overlay — pointer-events: none keeps hotspots clickable */}
-        <SeasonalParticles season={season} />
 
         {/* Hotspots */}
         <div className="absolute inset-0 pointer-events-none">

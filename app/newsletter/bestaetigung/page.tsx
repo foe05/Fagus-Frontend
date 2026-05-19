@@ -18,7 +18,7 @@ function ConfirmationContent() {
     if (!token) {
       setStatus({
         type: 'error',
-        message: 'Kein Bestätigungstoken gefunden. Bitte verwenden Sie den Link aus Ihrer Bestätigungs-E-Mail.',
+        message: 'Kein Bestätigungstoken gefunden. Bitte verwende den Link aus deiner Bestätigungs-E-Mail.',
       });
       return;
     }
@@ -42,7 +42,7 @@ function ConfirmationContent() {
       } catch (error) {
         setStatus({
           type: 'error',
-          message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+          message: 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneut.',
         });
       }
     };
@@ -67,7 +67,7 @@ function ConfirmationContent() {
                 Bestätigung wird verarbeitet...
               </h2>
               <p className="body-large text-text-medium">
-                Bitte warten Sie einen Moment.
+                Bitte warte einen Moment.
               </p>
             </div>
           )}
@@ -99,7 +99,7 @@ function ConfirmationContent() {
                     <div>
                       <strong className="label-large text-text-dark block">Willkommens-E-Mail</strong>
                       <p className="body-medium text-text-medium">
-                        Sie erhalten in Kürze eine Willkommens-E-Mail mit weiteren Informationen.
+                        Du erhältst in Kürze eine Willkommens-E-Mail mit weiteren Informationen.
                       </p>
                     </div>
                   </li>
@@ -110,7 +110,7 @@ function ConfirmationContent() {
                     <div>
                       <strong className="label-large text-text-dark block">Regelmäßige Updates</strong>
                       <p className="body-medium text-text-medium">
-                        Ab sofort erhalten Sie regelmäßig wertvolle Insights zu Ihren gewählten Themen.
+                        Ab sofort erhältst du regelmäßig wertvolle Insights zu deinen gewählten Themen.
                       </p>
                     </div>
                   </li>
@@ -121,7 +121,7 @@ function ConfirmationContent() {
                     <div>
                       <strong className="label-large text-text-dark block">Jederzeit abmelden</strong>
                       <p className="body-medium text-text-medium">
-                        Sie können sich jederzeit über den Link in jeder E-Mail wieder abmelden.
+                        Du kannst dich jederzeit über den Link in jeder E-Mail wieder abmelden.
                       </p>
                     </div>
                   </li>
@@ -221,7 +221,7 @@ export default function NewsletterBestaetigung() {
           <div className="max-w-3xl">
             <h1 className="display-medium mb-6">Newsletter-Bestätigung</h1>
             <p className="headline-small font-normal opacity-90">
-              Aktivierung Ihrer Newsletter-Anmeldung
+              Aktivierung deiner Newsletter-Anmeldung
             </p>
           </div>
         </div>

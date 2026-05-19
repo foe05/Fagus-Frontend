@@ -1,6 +1,7 @@
 import { getPageBySlug } from '@/lib/wordpress';
 import WordPressPageComponent from '@/components/WordPressPage';
 import Link from 'next/link';
+import { FinalCTA } from '@/components/ui';
 
 export const revalidate = 300; // Revalidate every 5 minutes
 
@@ -100,7 +101,7 @@ export default async function TeamWertePage() {
                 icon: 'handshake',
                 title: 'Partnerschaft',
                 description:
-                  'Wir sind keine Dienstleister, sondern langfristige Partner. Ihr Erfolg ist unser Erfolg.',
+                  'Wir sind keine Dienstleister, sondern langfristige Partner. Dein Erfolg ist unser Erfolg.',
               },
               {
                 icon: 'health_and_safety',
@@ -141,25 +142,14 @@ export default async function TeamWertePage() {
               </div>
             </div>
           </div>
-
-          {/* CTA */}
-          <div className="mt-16 p-8 bg-bg-light rounded-2xl text-center">
-            <h3 className="headline-small text-text-dark mb-4">
-              Möchten Sie unser Team kennenlernen?
-            </h3>
-            <p className="body-large text-text-medium mb-6">
-              Vereinbaren Sie ein kostenloses Erstgespräch und lernen Sie uns persönlich kennen.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full label-large hover:bg-primary-light hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-            >
-              <span className="material-symbols-outlined">calendar_month</span>
-              <span>Termin vereinbaren</span>
-            </Link>
-          </div>
         </div>
       </section>
+
+      <FinalCTA
+        title="Möchtest du unser Team kennenlernen?"
+        description="Vereinbare ein kostenloses Erstgespräch und lern uns persönlich kennen."
+        primaryCta={{ label: 'Termin vereinbaren', href: '/kontakt' }}
+      />
     </div>
   );
 }

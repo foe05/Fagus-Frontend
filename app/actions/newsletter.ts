@@ -54,7 +54,7 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
     if (!data.email) {
       return {
         success: false,
-        error: 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
+        error: 'Bitte gib deine E-Mail-Adresse ein.',
       };
     }
 
@@ -63,7 +63,7 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
     if (!emailRegex.test(data.email)) {
       return {
         success: false,
-        error: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+        error: 'Bitte gib eine gültige E-Mail-Adresse ein.',
       };
     }
 
@@ -71,7 +71,7 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
     if (!data.gdprConsent) {
       return {
         success: false,
-        error: 'Bitte stimmen Sie der Datenschutzerklärung zu.',
+        error: 'Bitte stimme der Datenschutzerklärung zu.',
       };
     }
 
@@ -154,11 +154,11 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
               </div>
 
               <div class="content">
-                <h2 style="color: #3E4E3A; margin-top: 0;">Bestätigen Sie Ihre Anmeldung</h2>
+                <h2 style="color: #3E4E3A; margin-top: 0;">Bestätige deine Anmeldung</h2>
 
-                <p>Vielen Dank für Ihr Interesse an unserem Newsletter!</p>
+                <p>Vielen Dank für dein Interesse an unserem Newsletter!</p>
 
-                <p>Um Ihre Anmeldung abzuschließen, bestätigen Sie bitte Ihre E-Mail-Adresse durch Klick auf den folgenden Button:</p>
+                <p>Um deine Anmeldung abzuschließen, bestätige bitte deine E-Mail-Adresse durch Klick auf den folgenden Button:</p>
 
                 <div style="text-align: center;">
                   <a href="${confirmationUrl}" class="button">
@@ -168,7 +168,7 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
 
                 ${data.topics.length > 0 ? `
                   <div class="topics">
-                    <strong>Ihre gewählten Themen:</strong>
+                    <strong>Deine gewählten Themen:</strong>
                     <ul style="margin: 10px 0 0 0; padding-left: 20px;">
                       ${data.topics.map(topic => {
                         const topicLabels: { [key: string]: string } = {
@@ -184,7 +184,7 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
 
                 <p style="color: #616161; font-size: 14px; margin-top: 30px;">
                   <strong>Hinweis:</strong> Dieser Link ist 24 Stunden gültig.
-                  Falls Sie sich nicht für unseren Newsletter angemeldet haben, ignorieren Sie diese E-Mail einfach.
+                  Falls du dich nicht für unseren Newsletter angemeldet hast, ignoriere diese E-Mail einfach.
                 </p>
               </div>
 
@@ -202,13 +202,13 @@ export async function subscribeToNewsletter(data: NewsletterSubscriptionData) {
       text: `
 Newsletter-Anmeldung bestätigen
 
-Vielen Dank für Ihr Interesse an unserem Newsletter!
+Vielen Dank für dein Interesse an unserem Newsletter!
 
-Um Ihre Anmeldung abzuschließen, öffnen Sie bitte den folgenden Link:
+Um deine Anmeldung abzuschließen, öffne bitte den folgenden Link:
 ${confirmationUrl}
 
 ${data.topics.length > 0 ? `
-Ihre gewählten Themen:
+Deine gewählten Themen:
 ${data.topics.map(topic => {
   const topicLabels: { [key: string]: string } = {
     'digitalization': 'Digitalisierungs-Tipps',
@@ -220,7 +220,7 @@ ${data.topics.map(topic => {
 ` : ''}
 
 Dieser Link ist 24 Stunden gültig.
-Falls Sie sich nicht für unseren Newsletter angemeldet haben, ignorieren Sie diese E-Mail einfach.
+Falls du dich nicht für unseren Newsletter angemeldet hast, ignoriere diese E-Mail einfach.
 
 ---
 Broetzens IT Cattles & Cows
@@ -233,13 +233,13 @@ hallo@broetzens.de
 
     return {
       success: true,
-      message: 'Vielen Dank! Bitte prüfen Sie Ihr E-Mail-Postfach und bestätigen Sie Ihre Anmeldung.',
+      message: 'Vielen Dank! Bitte prüfe dein E-Mail-Postfach und bestätige deine Anmeldung.',
     };
   } catch (error) {
     console.error('Newsletter-Anmeldung Fehler:', error);
     return {
       success: false,
-      error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+      error: 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.',
     };
   }
 }
@@ -272,7 +272,7 @@ export async function confirmSubscription(token: string) {
       pendingSubscriptions.delete(token);
       return {
         success: false,
-        error: 'Dieser Bestätigungslink ist abgelaufen. Bitte melden Sie sich erneut an.',
+        error: 'Dieser Bestätigungslink ist abgelaufen. Bitte melde dich erneut an.',
       };
     }
 
@@ -427,9 +427,9 @@ export async function confirmSubscription(token: string) {
               </div>
 
               <div class="content">
-                <h2 style="color: #3E4E3A; margin-top: 0;">Schön, dass Sie dabei sind!</h2>
+                <h2 style="color: #3E4E3A; margin-top: 0;">Schön, dass du dabei bist!</h2>
 
-                <p>Ihre Newsletter-Anmeldung wurde erfolgreich bestätigt. Ab sofort erhalten Sie regelmäßig wertvolle Insights zu:</p>
+                <p>Deine Newsletter-Anmeldung wurde erfolgreich bestätigt. Ab sofort erhältst du regelmäßig wertvolle Insights zu:</p>
 
                 <div class="card">
                   <h3 style="margin: 0 0 10px 0; color: #3E4E3A;">🌲 Digitalisierung im Forst</h3>
@@ -446,19 +446,16 @@ export async function confirmSubscription(token: string) {
                   <p style="margin: 0;">Informationen zu neuen Features und Produkten von Broetzens IT</p>
                 </div>
 
-                <p style="margin-top: 30px;">Entdecken Sie in der Zwischenzeit unsere Ressourcen:</p>
+                <p style="margin-top: 30px;">Entdecke in der Zwischenzeit unsere Ressourcen:</p>
 
                 <div style="text-align: center;">
                   <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/ueber-uns/blog-wissen" class="button">
                     📚 Blog & Wissen
                   </a>
-                  <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/ueber-uns/referenzen" class="button">
-                    ⭐ Referenzen
-                  </a>
                 </div>
 
                 <p style="color: #616161; font-size: 14px; margin-top: 30px;">
-                  Sie können sich jederzeit <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/newsletter/abmelden?email=${encodeURIComponent(subscription.email)}" style="color: #3E4E3A;">hier abmelden</a>.
+                  Du kannst dich jederzeit <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/newsletter/abmelden?email=${encodeURIComponent(subscription.email)}" style="color: #3E4E3A;">hier abmelden</a>.
                 </p>
               </div>
 
@@ -478,7 +475,7 @@ export async function confirmSubscription(token: string) {
       text: `
 Willkommen beim Broetzens IT Newsletter!
 
-Ihre Newsletter-Anmeldung wurde erfolgreich bestätigt. Ab sofort erhalten Sie regelmäßig wertvolle Insights zu:
+Deine Newsletter-Anmeldung wurde erfolgreich bestätigt. Ab sofort erhältst du regelmäßig wertvolle Insights zu:
 
 🌲 Digitalisierung im Forst
    Praktische Tipps zur digitalen Transformation in Forstbetrieben
@@ -489,11 +486,10 @@ Ihre Newsletter-Anmeldung wurde erfolgreich bestätigt. Ab sofort erhalten Sie r
 🚀 Produkt-Updates
    Informationen zu neuen Features und Produkten von Broetzens IT
 
-Entdecken Sie unsere Ressourcen:
+Entdecke unsere Ressourcen:
 - Blog & Wissen: ${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/ueber-uns/blog-wissen
-- Referenzen: ${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/ueber-uns/referenzen
 
-Sie können sich jederzeit hier abmelden:
+Du kannst dich jederzeit hier abmelden:
 ${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/newsletter/abmelden?email=${encodeURIComponent(subscription.email)}
 
 ---
@@ -510,13 +506,13 @@ hallo@broetzens.de
 
     return {
       success: true,
-      message: 'Ihre Newsletter-Anmeldung wurde erfolgreich bestätigt!',
+      message: 'Deine Newsletter-Anmeldung wurde erfolgreich bestätigt!',
     };
   } catch (error) {
     console.error('Newsletter-Bestätigung Fehler:', error);
     return {
       success: false,
-      error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+      error: 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.',
     };
   }
 }
@@ -620,13 +616,13 @@ export async function unsubscribeFromNewsletter(email: string) {
 
     return {
       success: true,
-      message: 'Sie wurden erfolgreich vom Newsletter abgemeldet. Schade, dass Sie gehen!',
+      message: 'Du wurdest erfolgreich vom Newsletter abgemeldet. Schade, dass du gehst!',
     };
   } catch (error) {
     console.error('Newsletter-Abmeldung Fehler:', error);
     return {
       success: false,
-      error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+      error: 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.',
     };
   }
 }

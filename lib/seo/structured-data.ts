@@ -431,7 +431,7 @@ export function generateContactPageSchema(): ContactPageSchema {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
     name: 'Kontakt - Broetzens IT Cattles & Cows',
-    description: 'Kontaktieren Sie uns für AI-First IT-Beratung für Forstbetriebe.',
+    description: 'Kontaktiere uns für AI-First IT-Beratung für Forstbetriebe.',
     url: `${SITE_URL}/kontakt`,
     mainEntity: {
       '@type': 'Organization',

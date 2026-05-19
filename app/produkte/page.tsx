@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getChildPages, getPageBySlug, stripHtml, getFeaturedImage } from '@/lib/wordpress';
+import { CardGrid, FeatureCard } from '@/components/ui';
 
 export const revalidate = 300;
 
@@ -102,10 +103,9 @@ export default async function ProduktePage() {
       )}
 
       <div className="container-custom py-20">
-        {/* Products Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {wpChildren.length > 0 ? (
-            wpChildren.map((page) => {
+        {wpChildren.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {wpChildren.map((page) => {
               const image = getFeaturedImage(page);
               const excerpt = stripHtml(page.excerpt.rendered).trim();
               return (
@@ -152,38 +152,28 @@ export default async function ProduktePage() {
                   </div>
                 </Link>
               );
-            })
-          ) : (
-            fallbackProducts.map((product) => (
-              <Link
+            })}
+          </div>
+        ) : (
+          <CardGrid columns={3} gap="lg">
+            {fallbackProducts.map((product) => (
+              <FeatureCard
                 key={product.slug}
-                href={`/produkte/${product.slug}`}
-                className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="bg-gradient-to-br from-primary to-primary-light p-6 text-white">
-                  <div className="flex items-start mb-4">
-                    <span className="material-symbols-outlined text-[48px]">
-                      {product.icon}
+                title={product.title}
+                description={
+                  <>
+                    <span className="block label-medium text-primary mb-2">
+                      {product.tagline}
                     </span>
-                  </div>
-                  <h2 className="headline-small mb-2">{product.title}</h2>
-                  <p className="body-small opacity-90">{product.tagline}</p>
-                </div>
-                <div className="p-6">
-                  <p className="body-medium text-text-medium mb-6">
                     {product.description}
-                  </p>
-                  <div className="flex items-center gap-2 label-medium text-primary">
-                    <span>Details ansehen</span>
-                    <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
-                      arrow_forward
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))
-          )}
-        </div>
+                  </>
+                }
+                icon={product.icon}
+                href={`/produkte/${product.slug}`}
+              />
+            ))}
+          </CardGrid>
+        )}
       </div>
     </div>
   );

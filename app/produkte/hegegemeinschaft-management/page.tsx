@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { FinalCTA } from '@/components/ui';
 
 export default function HegegemeinschaftManagementPage() {
   return (
@@ -123,25 +123,14 @@ export default function HegegemeinschaftManagementPage() {
               — Hegegemeinschaftsleiter, 12 Reviere
             </p>
           </div>
-
-          {/* CTA */}
-          <div className="mt-16 p-8 bg-bg-light rounded-2xl text-center">
-            <h3 className="headline-small text-text-dark mb-4">
-              Interesse an Hegegemeinschaft Management?
-            </h3>
-            <p className="body-large text-text-medium mb-6">
-              Vereinbaren Sie eine kostenlose Demo und erleben Sie die Software in Aktion.
-            </p>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full label-large hover:bg-primary-light hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-            >
-              <span className="material-symbols-outlined">calendar_month</span>
-              <span>Demo vereinbaren</span>
-            </Link>
-          </div>
         </div>
       </section>
+
+      <FinalCTA
+        title="Interesse an Hegegemeinschaft Management?"
+        description="Vereinbare eine kostenlose Demo und erlebe die Software in Aktion."
+        primaryCta={{ label: 'Demo vereinbaren', href: '/kontakt' }}
+      />
     </div>
   );
 }

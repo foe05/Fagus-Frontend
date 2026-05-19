@@ -10,7 +10,7 @@ export default function NewsletterAbonnierenPage() {
           <div className="max-w-3xl">
             <h1 className="display-medium mb-6">Newsletter abonnieren</h1>
             <p className="headline-small font-normal opacity-90">
-              Bleiben Sie auf dem Laufenden über Digitalisierung in der Forstwirtschaft
+              Bleib auf dem Laufenden über Digitalisierung in der Forstwirtschaft
             </p>
           </div>
         </div>
@@ -26,7 +26,7 @@ export default function NewsletterAbonnierenPage() {
                 Jetzt anmelden
               </h2>
               <p className="body-large text-text-medium mb-8">
-                Melden Sie sich für unseren Newsletter an und erhalten Sie regelmäßig
+                Melde dich für unseren Newsletter an und erhalte regelmäßig
                 Informationen zu Digitalisierung, KI-Trends und Produktneuigkeiten in der
                 Forstwirtschaft.
               </p>
@@ -40,9 +40,9 @@ export default function NewsletterAbonnierenPage() {
                       Double-Opt-in Verfahren
                     </h3>
                     <p className="body-small text-text-medium">
-                      Nach Ihrer Anmeldung erhalten Sie eine Bestätigungs-E-Mail.
-                      Bitte klicken Sie auf den Link in dieser E-Mail, um Ihre Anmeldung
-                      abzuschließen. Erst dann erhalten Sie unseren Newsletter.
+                      Nach deiner Anmeldung erhältst du eine Bestätigungs-E-Mail.
+                      Bitte klicke auf den Link in dieser E-Mail, um deine Anmeldung
+                      abzuschließen. Erst dann erhältst du unseren Newsletter.
                     </p>
                   </div>
                 </div>
@@ -54,7 +54,7 @@ export default function NewsletterAbonnierenPage() {
             {/* Benefits */}
             <div>
               <h2 className="headline-large text-text-dark mb-6">
-                Das erwartet Sie
+                Das erwartet dich
               </h2>
 
               <div className="space-y-6">
@@ -70,7 +70,7 @@ export default function NewsletterAbonnierenPage() {
                     </h3>
                     <p className="body-medium text-text-medium">
                       Praktische Tipps und Best Practices für die Digitalisierung
-                      Ihres Forstbetriebs.
+                      deines Forstbetriebs.
                     </p>
                   </div>
                 </div>
@@ -86,7 +86,7 @@ export default function NewsletterAbonnierenPage() {
                       KI-Trends und Innovation
                     </h3>
                     <p className="body-medium text-text-medium">
-                      Erfahren Sie, wie künstliche Intelligenz die Forstwirtschaft
+                      Erfahre, wie künstliche Intelligenz die Forstwirtschaft
                       revolutioniert und welche Möglichkeiten sich bieten.
                     </p>
                   </div>
@@ -103,7 +103,7 @@ export default function NewsletterAbonnierenPage() {
                       Produktneuigkeiten
                     </h3>
                     <p className="body-medium text-text-medium">
-                      Seien Sie die Ersten, die von neuen Features, Updates und
+                      Sei eine/r der Ersten, die von neuen Features, Updates und
                       Verbesserungen erfahren.
                     </p>
                   </div>
@@ -117,10 +117,10 @@ export default function NewsletterAbonnierenPage() {
                   </div>
                   <div>
                     <h3 className="label-large text-text-dark mb-2">
-                      Ihre Zeit ist wertvoll
+                      Deine Zeit ist wertvoll
                     </h3>
                     <p className="body-medium text-text-medium">
-                      Kompakte, relevante Informationen ohne Spam. Sie können sich
+                      Kompakte, relevante Informationen ohne Spam. Du kannst dich
                       jederzeit mit einem Klick abmelden.
                     </p>
                   </div>
@@ -134,9 +134,9 @@ export default function NewsletterAbonnierenPage() {
                   Datenschutz
                 </h3>
                 <p className="body-small text-text-medium">
-                  Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.
-                  Sie können den Newsletter jederzeit über den Abmeldelink in jeder E-Mail
-                  kündigen. Weitere Informationen finden Sie in unserer{' '}
+                  Deine Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.
+                  Du kannst den Newsletter jederzeit über den Abmeldelink in jeder E-Mail
+                  kündigen. Weitere Informationen findest du in unserer{' '}
                   <Link href="/datenschutz" className="text-primary hover:underline">
                     Datenschutzerklärung
                   </Link>

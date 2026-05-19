@@ -52,22 +52,6 @@ export const HOTSPOTS: Hotspot[] = [
     ],
   },
   {
-    id: 'referenzen',
-    icon: 'star',
-    label: 'Referenzen',
-    position: { left: '70%', top: '28%' },
-    type: 'referenzen',
-    title: 'Erfolgsgeschichten',
-    description: 'Case Studies aus 15+ Projekten',
-    link: '/ueber-uns/referenzen',
-    features: [
-      'Hegegemeinschaft mit 60+ aktiven Nutzern',
-      'Erdmassenberechnung für Forststraßenbau',
-      'Prozessautomatisierung in der Holzvermarktung',
-      'Digitale Revierplanung und -verwaltung',
-    ],
-  },
-  {
     id: 'themen',
     icon: 'topic',
     label: 'Themen',
@@ -177,7 +161,6 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: 'Über uns', href: '/ueber-uns' },
       { label: 'Team & Werte', href: '/ueber-uns/team-werte' },
       { label: 'AI-First Ansatz', href: '/ueber-uns/ai-first-ansatz' },
-      { label: 'Referenzen', href: '/ueber-uns/referenzen' },
       { label: 'Blog & Wissen', href: '/ueber-uns/blog-wissen' },
     ],
   },
@@ -198,19 +181,19 @@ export const SOCIAL_LINKS: SocialLink[] = [
     platform: 'LinkedIn',
     icon: 'link',
     url: 'https://www.linkedin.com/company/108531363',
-    ariaLabel: 'Besuchen Sie uns auf LinkedIn',
+    ariaLabel: 'Besuche uns auf LinkedIn',
   },
   {
     platform: 'GitHub',
     icon: 'code',
     url: 'https://github.com/foe05',
-    ariaLabel: 'Folgen Sie uns auf GitHub',
+    ariaLabel: 'Folge uns auf GitHub',
   },
   {
     platform: 'Email',
     icon: 'email',
     url: 'mailto:hallo@broetzens.de',
-    ariaLabel: 'Schreiben Sie uns eine E-Mail',
+    ariaLabel: 'Schreib uns eine E-Mail',
   },
 ];
 
@@ -237,7 +220,7 @@ export const COMPANY_INFO = {
 export const COOKIE_CONSENT_TEXT = {
   title: 'Cookie-Einstellungen',
   description:
-    'Wir verwenden Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu ermöglichen. Einige Cookies sind technisch notwendig, während andere uns helfen, die Website zu verbessern und Ihnen ein besseres Nutzungserlebnis zu bieten.',
+    'Wir verwenden Cookies, um dir die bestmögliche Nutzung unserer Website zu ermöglichen. Einige Cookies sind technisch notwendig, während andere uns helfen, die Website zu verbessern und dir ein besseres Nutzungserlebnis zu bieten.',
   acceptAll: 'Alle akzeptieren',
   rejectAll: 'Alle ablehnen',
   customize: 'Einstellungen',

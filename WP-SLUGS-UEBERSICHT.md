@@ -52,7 +52,7 @@ Sie dienen als Container für die jeweiligen Kind-Seiten.
 | `digitalisierungsstrategie` | `/services/digitalisierungsstrategie` | `app/services/digitalisierungsstrategie/page.tsx` | Statische Seite + dynamischer Fallback |
 | `prozessoptimierung-automatisierung` | `/services/prozessoptimierung-automatisierung` | `app/services/[slug]/page.tsx` | Dynamisch |
 | `change-management` | `/services/change-management` | `app/services/[slug]/page.tsx` | Dynamisch |
-| `prototyping-mvp` | `/services/prototyping-mvp` | `app/services/[slug]/page.tsx` | Dynamisch |
+| `prototyping-mvp` | `/services/prototyping-mvp` | `app/services/prototyping-mvp/page.tsx` | Statische Seite + dynamischer Fallback |
 
 ---
 
@@ -118,6 +118,7 @@ Das Frontend verwendet ein Hybrid-Modell:
 | `team-werte` | Ja |
 | `hegegemeinschaft-management` | Ja |
 | `digitalisierungsstrategie` | Ja |
+| `prototyping-mvp` | Ja |
 | Übersicht `produkte` | Ja |
 | Übersicht `services` | Ja |
 | Übersicht `ueber-uns` | Ja |

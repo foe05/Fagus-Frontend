@@ -1,3 +1,11 @@
+# Fixed project name so that `docker compose` always targets the same
+# container + volume regardless of which directory it is invoked from.
+# Without this, the project name is derived from the working directory,
+# which caused a split between `fagus_frontend` (deployed) and
+# `fagus-frontend` (workspace) and almost overwrote the WP data volume
+# with an empty one.
+name: fagus_frontend
+
 services:
   fagus:
     build:
@@ -22,7 +30,12 @@ services:
       - proxy
 
 volumes:
+  # Marked external so Compose will never create a fresh empty volume
+  # if the name doesn't match — it fails loudly instead. Create once with:
+  #   docker volume create fagus_frontend_wp_content
   wp_content:
+    name: fagus_frontend_wp_content
+    external: true
 
 networks:
   proxy:

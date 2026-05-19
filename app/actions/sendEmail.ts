@@ -18,7 +18,7 @@ export async function sendContactEmail(data: ContactFormData) {
     if (!data.name || !data.email || !data.message) {
       return {
         success: false,
-        error: 'Bitte füllen Sie alle Pflichtfelder aus.',
+        error: 'Bitte fülle alle Pflichtfelder aus.',
       };
     }
 
@@ -27,7 +27,7 @@ export async function sendContactEmail(data: ContactFormData) {
     if (!emailRegex.test(data.email)) {
       return {
         success: false,
-        error: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+        error: 'Bitte gib eine gültige E-Mail-Adresse ein.',
       };
     }
 
@@ -56,19 +56,19 @@ export async function sendContactEmail(data: ContactFormData) {
     if (result.success) {
       return {
         success: true,
-        message: result.message || 'Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns in Kürze bei Ihnen.',
+        message: result.message || 'Vielen Dank! Wir haben deine Nachricht erhalten und melden uns in Kürze bei dir.',
       };
     }
 
     return {
       success: false,
-      error: result.error || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.',
+      error: result.error || 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.',
     };
   } catch (error) {
     console.error('Contact form error:', error);
     return {
       success: false,
-      error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt per E-Mail an hallo@broetzens.de.',
+      error: 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut oder kontaktiere uns direkt per E-Mail an hallo@broetzens.de.',
     };
   }
 }
