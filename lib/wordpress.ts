@@ -67,7 +67,24 @@ export async function getSiteIcon(): Promise<string | null> {
     }
 
     const data = await response.json();
-    return data.site_icon_url || null;
+    const rawUrl: string | undefined = data.site_icon_url;
+    if (!rawUrl) return null;
+
+    // WordPress baut site_icon_url aus der WP_HOME-Option. Im Container ist das
+    // die interne Adresse (http://<ip>:<port>), die der Browser auf der
+    // öffentlichen HTTPS-Seite als Mixed Content blockiert. Origin auf den
+    // öffentlichen Host umschreiben, Pfad beibehalten.
+    try {
+      const publicSite = process.env.NEXT_PUBLIC_SITE_URL || 'https://broetzens.de';
+      const parsed = new URL(rawUrl);
+      const publicOrigin = new URL(publicSite).origin;
+      if (parsed.origin !== publicOrigin) {
+        return `${publicOrigin}${parsed.pathname}${parsed.search}`;
+      }
+      return rawUrl;
+    } catch {
+      return rawUrl;
+    }
   } catch (error) {
     console.error('WordPress API Error (site icon):', error);
     return null;
