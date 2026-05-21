@@ -1,5 +1,7 @@
 'use server';
 
+import { logEvent } from '@/lib/logging';
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -65,6 +67,15 @@ export async function sendContactEmail(data: ContactFormData) {
     const result = await response.json();
 
     if (result.success) {
+      // Campaign submissions get logged centrally so conversion can be
+      // compared against rostock_pageview counts.
+      if (data.source === 'rostock-postkarte') {
+        await logEvent({
+          event: 'rostock_form_submit',
+          payload: { with_email: Boolean(data.email) },
+        });
+      }
+
       return {
         success: true,
         message: result.message || 'Vielen Dank! Wir haben deine Nachricht erhalten und melden uns in Kürze bei dir.',

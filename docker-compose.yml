@@ -24,6 +24,9 @@ services:
       - WP_API_URL=http://127.0.0.1/wp-json/wp/v2
       # Kontaktformular: E-Mails werden via wp_mail() / WP Mail SMTP gesendet.
       # Empfaenger konfigurierbar als WP-Option (fagus_contact_email), Standard: hallo@broetzens.de
+      # Zentrales Logging (log.broetzens.de). API-Key kommt aus .env (gitignored).
+      # Leer = Logging deaktiviert (graceful no-op in app/api/log/route.ts).
+      - LOGGING_API_KEY=${LOGGING_API_KEY:-}
       # WordPress Debug (optional)
       # - WP_DEBUG=true
     networks:

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import RostockForm from './RostockForm';
+import PageviewBeacon from './PageviewBeacon';
 import styles from './rostock.module.css';
 
 // Page-scoped fonts — only loaded for /rostock so we don't bloat the
@@ -47,6 +48,7 @@ export default function RostockPage() {
 
   return (
     <div className={`${styles.page} ${fontClass}`}>
+      <PageviewBeacon />
       <header className={styles.siteHeader}>
         <div className={styles.siteHeaderInner}>
           <Image
