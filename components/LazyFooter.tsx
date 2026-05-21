@@ -1,4 +1,7 @@
+'use client';
+
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import type { FooterColumn } from '@/lib/types';
 
 const FooterComponent = dynamic(() => import('./Footer'), {
@@ -11,13 +14,16 @@ const FooterComponent = dynamic(() => import('./Footer'), {
       </div>
     </footer>
   ),
-  ssr: true,
 });
 
 interface LazyFooterProps {
   footerColumns?: FooterColumn[];
 }
 
+const STANDALONE_ROUTES = ['/rostock'];
+
 export default function LazyFooter({ footerColumns }: LazyFooterProps) {
+  const pathname = usePathname();
+  if (pathname && STANDALONE_ROUTES.includes(pathname)) return null;
   return <FooterComponent footerColumns={footerColumns} />;
 }

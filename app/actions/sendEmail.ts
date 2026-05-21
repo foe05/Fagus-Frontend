@@ -5,6 +5,10 @@ export interface ContactFormData {
   email: string;
   company?: string;
   message: string;
+  // Optional campaign marker. When set, name/email become optional and the
+  // WP backend prefixes the subject with [<source>]. Used for landing pages
+  // like /rostock that need a lower-friction form.
+  source?: string;
 }
 
 /**
@@ -14,21 +18,27 @@ export interface ContactFormData {
  */
 export async function sendContactEmail(data: ContactFormData) {
   try {
-    // Validation
-    if (!data.name || !data.email || !data.message) {
+    // Validation — for campaign sources only message is required.
+    if (data.source) {
+      if (!data.message) {
+        return { success: false, error: 'Bitte beschreibe dein Anliegen.' };
+      }
+    } else if (!data.name || !data.email || !data.message) {
       return {
         success: false,
         error: 'Bitte fülle alle Pflichtfelder aus.',
       };
     }
 
-    // E-Mail-Validierung
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-      return {
-        success: false,
-        error: 'Bitte gib eine gültige E-Mail-Adresse ein.',
-      };
+    // E-Mail-Validierung — nur prüfen wenn nicht leer
+    if (data.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        return {
+          success: false,
+          error: 'Bitte gib eine gültige E-Mail-Adresse ein.',
+        };
+      }
     }
 
     // Build the WordPress REST API URL for the contact endpoint
@@ -48,6 +58,7 @@ export async function sendContactEmail(data: ContactFormData) {
         email: data.email,
         company: data.company || '',
         message: data.message,
+        source: data.source || '',
       }),
     });
 

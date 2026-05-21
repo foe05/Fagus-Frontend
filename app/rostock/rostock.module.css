@@ -1,0 +1,405 @@
+/* Rostock landing page — scoped styles per BRIEFING.md.
+   Deliberately diverges from the main site (Soil-brown accent, du-form,
+   editorial layout). CSS variables are local to this page so they don't
+   leak into other routes. */
+
+.page {
+  --ink-950: #0A0B0D;
+  --ink-900: #15171A;
+  --ink-700: #2C2F36;
+  --ink-500: #5E636E;
+  --ink-300: #A8ADB5;
+  --ink-200: #D2D5DB;
+  --ink-100: #ECEEF1;
+  --ink-50:  #F6F7F8;
+  --paper:      #FAF8F3;
+  --paper-pure: #FFFFFF;
+  --forest-700: #1F4F38;
+  --forest-100: #E6F1EA;
+  --soil-800: #3B2A1E;
+  --soil-600: #6B4A30;
+  --soil-400: #A47A56;
+  --soil-200: #E3D0B8;
+  --soil-100: #F3ECDF;
+
+  font-family: var(--font-inter), -apple-system, sans-serif;
+  background: var(--paper);
+  color: var(--ink-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(rgba(107, 74, 48, 0.02) 1px, transparent 1px),
+    radial-gradient(rgba(10, 11, 13, 0.015) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Minimal Header ---------- */
+.siteHeader {
+  border-bottom: 1px solid var(--ink-100);
+  padding: 20px 0;
+}
+.siteHeaderInner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerLogo {
+  height: 36px;
+  width: auto;
+}
+.headerMeta {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.headerMetaAccent {
+  color: var(--soil-600);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 64px 0 32px;
+}
+.eyebrow {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--soil-600);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+.eyebrowDim {
+  color: var(--ink-500);
+}
+.h1 {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink-950);
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+.h1Accent {
+  color: var(--soil-600);
+  font-style: italic;
+  font-weight: 500;
+}
+.lead {
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--ink-700);
+  margin-bottom: 32px;
+  max-width: 600px;
+  text-wrap: pretty;
+}
+
+/* ---------- Photo ---------- */
+.heroPhoto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin: 24px 0 48px;
+  overflow: hidden;
+  background: var(--ink-100);
+}
+.heroPhoto img {
+  object-fit: cover;
+  object-position: center 25%;
+  filter: contrast(1.02) saturate(0.95);
+}
+.heroPhotoCap {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  color: var(--paper);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(10, 11, 13, 0.6);
+  padding: 4px 8px;
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+/* ---------- The Why ---------- */
+.whyBlock {
+  border-left: 2px solid var(--soil-600);
+  padding-left: 24px;
+  margin: 48px 0;
+}
+.whyBlock p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-900);
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+.whyBlock p:last-child {
+  margin-bottom: 0;
+}
+.whyBlock strong {
+  color: var(--ink-950);
+  font-weight: 700;
+}
+
+/* ---------- The Form ---------- */
+.formSection {
+  background: var(--paper-pure);
+  border: 1px solid var(--ink-200);
+  padding: 40px;
+  margin: 48px 0;
+}
+@media (max-width: 600px) {
+  .formSection {
+    padding: 28px 20px;
+  }
+}
+.formTitle {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.1;
+  color: var(--ink-950);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.formSubtitle {
+  font-size: 15px;
+  color: var(--ink-500);
+  margin-bottom: 28px;
+}
+.formGroup {
+  margin-bottom: 20px;
+}
+.label {
+  display: block;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-700);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.labelOptional {
+  color: var(--ink-300);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+.input,
+.textarea {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--ink-200);
+  border-radius: 0;
+  padding: 12px 14px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-950);
+  transition: border-color 140ms, box-shadow 140ms;
+}
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--soil-600);
+  box-shadow: 0 0 0 3px rgba(107, 74, 48, 0.15);
+}
+.helper {
+  font-size: 13px;
+  color: var(--ink-500);
+  margin-top: 6px;
+}
+.submit {
+  appearance: none;
+  border: none;
+  background: var(--ink-950);
+  color: var(--paper);
+  padding: 16px 28px;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: transform 140ms, background 140ms;
+  width: 100%;
+  margin-top: 8px;
+}
+.submit:hover {
+  background: var(--soil-800);
+}
+.submit:active {
+  transform: scale(0.985);
+}
+.submit:disabled {
+  background: var(--ink-500);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- Trust row ---------- */
+.trustRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ink-100);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.trustRow span::before {
+  content: '✓ ';
+  color: var(--soil-600);
+}
+
+/* ---------- Success / error messages ---------- */
+.successBox {
+  border: 1px solid var(--soil-200);
+  background: var(--soil-100);
+  padding: 24px;
+  color: var(--ink-900);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.errorBox {
+  border: 1px solid #E3B4B4;
+  background: #FBEDED;
+  padding: 16px;
+  color: #6A1F1F;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+/* ---------- Secondary actions ---------- */
+.secondary {
+  margin: 48px 0;
+  padding: 28px 0;
+  border-top: 1px solid var(--ink-200);
+  border-bottom: 1px solid var(--ink-200);
+}
+.secondaryHeading {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink-700);
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+.secondaryLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.secondaryLinks a {
+  color: var(--ink-900);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-200);
+  padding-bottom: 8px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 140ms, color 140ms;
+}
+.secondaryLinks a:hover {
+  border-bottom-color: var(--soil-600);
+  color: var(--soil-600);
+}
+.secondaryArrow {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 13px;
+  color: var(--ink-300);
+  transition: transform 140ms, color 140ms;
+  white-space: nowrap;
+}
+.secondaryLinks a:hover .secondaryArrow {
+  transform: translateX(4px);
+  color: var(--soil-600);
+}
+.secondaryFootnote {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--ink-500);
+  line-height: 1.5;
+}
+
+/* ---------- Footer ---------- */
+.siteFooter {
+  padding: 40px 0;
+  border-top: 1px solid var(--ink-200);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  color: var(--ink-500);
+  line-height: 1.6;
+}
+.siteFooterInner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.siteFooter a {
+  color: var(--ink-500);
+  text-decoration: underline;
+  text-decoration-color: var(--ink-200);
+}
+.siteFooter a:hover {
+  color: var(--soil-600);
+}
+
+/* ---------- Reveal animation ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .hero,
+  .whyBlock,
+  .formSection,
+  .secondary {
+    animation: fadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  }
+  .hero { animation-delay: 0.05s; }
+  .heroPhoto {
+    animation: fadeUp 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s backwards;
+  }
+  .whyBlock { animation-delay: 0.25s; }
+  .formSection { animation-delay: 0.35s; }
+  .secondary { animation-delay: 0.45s; }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

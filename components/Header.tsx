@@ -11,6 +11,8 @@ interface HeaderProps {
   navigation?: NavigationItem[];
 }
 
+const STANDALONE_ROUTES = ['/rostock'];
+
 export default function Header({ navigation }: HeaderProps) {
   const navItems = navigation ?? NAVIGATION_ITEMS;
   const pathname = usePathname();
@@ -25,6 +27,8 @@ export default function Header({ navigation }: HeaderProps) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (pathname && STANDALONE_ROUTES.includes(pathname)) return null;
 
   return (
     <header

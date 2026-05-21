@@ -18,20 +18,33 @@ add_action('rest_api_init', function () {
  * Handle contact form submission.
  */
 function fagus_handle_contact_form(WP_REST_Request $request) {
-    $name    = sanitize_text_field($request->get_param('name'));
-    $email   = sanitize_email($request->get_param('email'));
+    $name    = sanitize_text_field($request->get_param('name') ?? '');
+    $email   = sanitize_email($request->get_param('email') ?? '');
     $company = sanitize_text_field($request->get_param('company') ?? '');
     $message = sanitize_textarea_field($request->get_param('message'));
+    $source  = sanitize_text_field($request->get_param('source') ?? '');
 
-    // Validation
-    if (empty($name) || empty($email) || empty($message)) {
-        return new WP_REST_Response([
-            'success' => false,
-            'error'   => 'Bitte fülle alle Pflichtfelder aus.',
-        ], 400);
+    // For campaign sources (e.g. rostock-postkarte) only the message is required –
+    // name and email are explicitly optional per briefing. For the standard
+    // /kontakt form, all three remain required.
+    if (empty($source)) {
+        if (empty($name) || empty($email) || empty($message)) {
+            return new WP_REST_Response([
+                'success' => false,
+                'error'   => 'Bitte fülle alle Pflichtfelder aus.',
+            ], 400);
+        }
+    } else {
+        if (empty($message)) {
+            return new WP_REST_Response([
+                'success' => false,
+                'error'   => 'Bitte beschreibe dein Anliegen.',
+            ], 400);
+        }
     }
 
-    if (!is_email($email)) {
+    // Validate email format only when provided
+    if (!empty($email) && !is_email($email)) {
         return new WP_REST_Response([
             'success' => false,
             'error'   => 'Bitte gib eine gültige E-Mail-Adresse ein.',
@@ -55,10 +68,13 @@ function fagus_handle_contact_form(WP_REST_Request $request) {
     // Recipient – configurable via WP option, falls back to default
     $to = get_option('fagus_contact_email', 'hallo@broetzens.de');
 
-    // Subject
+    // Subject – campaign source gets a bracket-prefix so emails sort easily.
+    $subject_prefix = $source ? '[' . $source . '] ' : '';
+    $subject_from   = $name !== '' ? $name : ($email !== '' ? $email : 'anonym');
     $subject = sprintf(
-        'Neue Kontaktanfrage von %s%s',
-        $name,
+        '%sNeue Kontaktanfrage von %s%s',
+        $subject_prefix,
+        $subject_from,
         $company ? " ($company)" : ''
     );
 
@@ -66,6 +82,7 @@ function fagus_handle_contact_form(WP_REST_Request $request) {
     $safe_name    = esc_html($name);
     $safe_email   = esc_html($email);
     $safe_company = esc_html($company);
+    $safe_source  = esc_html($source);
     $safe_message = nl2br(esc_html($message));
     $date_str     = wp_date('j. F Y, H:i');
 
@@ -81,10 +98,28 @@ function fagus_handle_contact_form(WP_REST_Request $request) {
       <p style="margin: 10px 0 0 0; opacity: 0.9;">Broetzens IT Cattles &amp; Cows</p>
     </div>
     <div style="background: #F8F8F8; padding: 30px; border-radius: 0 0 8px 8px;">
+HTML;
+
+    if ($safe_source) {
+        $body .= <<<HTML
+      <div style="margin-bottom: 20px;">
+        <div style="font-weight: 500; color: #616161; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Quelle</div>
+        <div style="font-size: 16px; color: #2C2C2C; padding: 10px; background: white; border-radius: 4px; border-left: 3px solid #6B4A30;">{$safe_source}</div>
+      </div>
+HTML;
+    }
+
+    if ($safe_name) {
+        $body .= <<<HTML
       <div style="margin-bottom: 20px;">
         <div style="font-weight: 500; color: #616161; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Name</div>
         <div style="font-size: 16px; color: #2C2C2C; padding: 10px; background: white; border-radius: 4px; border-left: 3px solid #3E4E3A;">{$safe_name}</div>
       </div>
+HTML;
+    }
+
+    if ($safe_email) {
+        $body .= <<<HTML
       <div style="margin-bottom: 20px;">
         <div style="font-weight: 500; color: #616161; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">E-Mail</div>
         <div style="font-size: 16px; color: #2C2C2C; padding: 10px; background: white; border-radius: 4px; border-left: 3px solid #3E4E3A;">
@@ -92,6 +127,7 @@ function fagus_handle_contact_form(WP_REST_Request $request) {
         </div>
       </div>
 HTML;
+    }
 
     if ($safe_company) {
         $body .= <<<HTML
@@ -118,10 +154,12 @@ HTML;
 HTML;
 
     // Headers
-    $headers = [
-        'Content-Type: text/html; charset=UTF-8',
-        sprintf('Reply-To: %s <%s>', $name, $email),
-    ];
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+    if (!empty($email)) {
+        $headers[] = $name !== ''
+            ? sprintf('Reply-To: %s <%s>', $name, $email)
+            : sprintf('Reply-To: %s', $email);
+    }
 
     // Send via wp_mail() – uses WP Mail SMTP plugin configuration
     $sent = wp_mail($to, $subject, $body, $headers);
