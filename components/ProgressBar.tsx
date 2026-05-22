@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+
+const STANDALONE_ROUTES = ['/rostock'];
 
 export default function ProgressBar() {
+  const pathname = usePathname();
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -20,6 +24,8 @@ export default function ProgressBar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (pathname && STANDALONE_ROUTES.includes(pathname)) return null;
 
   return (
     <div
