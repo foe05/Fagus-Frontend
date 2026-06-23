@@ -12,6 +12,8 @@
 // Strukturtrenner. Im N- und ADR-Feld trennen unescapte `;` die Komponenten —
 // deshalb escapen wir jede Komponente einzeln und fügen die rohen `;` selbst ein.
 
+import type { ContactCard } from './cards';
+
 export interface VCardInput {
   uid: string; // stabil (Owner: slug@broetzens.de) oder UUID (Besucher)
   firstName: string;
@@ -151,4 +153,27 @@ export function buildVCard(input: VCardInput): string {
 
   // Zeilen falten, mit CRLF verbinden und mit CRLF abschließen.
   return lines.map(foldLine).join('\r\n') + '\r\n';
+}
+
+/**
+ * Baut die Owner-vCard aus einer Registry-Karte. Wird sowohl vom
+ * Download-Route-Handler als auch von der Besucher-Bestätigungsmail genutzt.
+ * UID ist stabil (`slug@broetzens.de`), damit Re-Importe denselben Kontakt
+ * aktualisieren statt zu duplizieren.
+ */
+export function buildOwnerVCard(card: ContactCard): string {
+  return buildVCard({
+    uid: `${card.slug}@broetzens.de`,
+    firstName: card.firstName,
+    lastName: card.lastName,
+    fullName: card.fullName,
+    org: card.org,
+    title: card.title,
+    emails: card.emails,
+    phones: card.phones,
+    url: card.url,
+    addresses: card.addresses,
+    photoUrl: card.photoUrl,
+    note: card.note,
+  });
 }
