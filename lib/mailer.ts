@@ -1,47 +1,17 @@
-// Nodemailer-SMTP-Transport für die digitale Kontaktkarte
-// (Spec docs/Contact.md, Abschnitte 7 & 11).
+// Mailversand für die digitale Kontaktkarte (Spec docs/Contact.md, Abschnitt 7).
 //
-// Server-only: liest ausschließlich SMTP_*-Env-Variablen. Niemals aus einer
-// Client-Komponente importieren — die Zugangsdaten dürfen das Bundle nie
-// erreichen. Versand läuft DSGVO-konform über eigene Infrastruktur (IONOS /
-// eigener Mailserver), kein US-Drittdienst.
-
-import nodemailer, { type Transporter } from 'nodemailer';
-
-let cachedTransporter: Transporter | null = null;
-
-/** Lazily erzeugter, wiederverwendeter SMTP-Transport. */
-function getTransporter(): Transporter {
-  if (cachedTransporter) return cachedTransporter;
-
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT ?? '587');
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-
-  if (!host || !user || !pass) {
-    throw new Error(
-      'SMTP-Konfiguration unvollständig — SMTP_HOST, SMTP_USER und SMTP_PASS müssen gesetzt sein.',
-    );
-  }
-
-  cachedTransporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465, // 465 = implizites TLS, 587 = STARTTLS
-    auth: { user, pass },
-  });
-
-  return cachedTransporter;
-}
-
-/** Absender aus SMTP_FROM, mit sinnvollem Fallback. */
-export const MAIL_FROM =
-  process.env.SMTP_FROM || 'Broetzens IT <kontakt@broetzens.de>';
+// Statt eines eigenen SMTP-Transports läuft der Versand — wie das bestehende
+// Kontaktformular (app/actions/sendEmail.ts) — über WordPress: ein POST an den
+// mu-plugin-Endpoint `fagus/v1/card-mail`, der `wp_mail()` aufruft und damit die
+// vorhandene WP-Mail-SMTP-Zustellung (Hetzner) nutzt. So gibt es genau EINEN
+// Mailweg und keine doppelten SMTP-Zugangsdaten.
+//
+// Server-only: liest CARD_MAIL_TOKEN aus der Umgebung. Niemals aus einer
+// Client-Komponente importieren.
 
 export interface MailAttachment {
   filename: string;
-  content: string | Buffer;
+  content: string; // Dateiinhalt als String (hier: die .vcf)
   contentType?: string;
 }
 
@@ -52,14 +22,54 @@ export interface SendMailInput {
   attachments?: MailAttachment[];
 }
 
-/** Versendet eine Plaintext-Mail (optional mit Anhängen) über SMTP. */
+/** Basis-URL der WordPress-REST-API (ohne /wp/v2), analog zu sendEmail.ts. */
+function wpBaseUrl(): string {
+  const wpApiUrl = (
+    process.env.WP_API_URL ??
+    process.env.NEXT_PUBLIC_WP_API_URL ??
+    'http://127.0.0.1/wp-json/wp/v2'
+  ).replace(/\/+$/, '');
+  return wpApiUrl.replace(/\/wp\/v2\/?$/, '');
+}
+
+/**
+ * Versendet eine Plaintext-Mail (optional mit einem .vcf-Anhang) über den
+ * WordPress-Endpoint. Wirft bei fehlendem Token oder Zustellfehler — der Aufrufer
+ * (app/api/exchange) entscheidet, ob das ein harter Fehler ist (Owner-Mail) oder
+ * still ignoriert wird (Bestätigungsmail).
+ */
 export async function sendMail(input: SendMailInput): Promise<void> {
-  const transporter = getTransporter();
-  await transporter.sendMail({
-    from: MAIL_FROM,
-    to: input.to,
-    subject: input.subject,
-    text: input.text,
-    attachments: input.attachments,
+  const token = process.env.CARD_MAIL_TOKEN;
+  if (!token) {
+    throw new Error(
+      'CARD_MAIL_TOKEN ist nicht gesetzt — der Karten-Mailversand ist deaktiviert.',
+    );
+  }
+
+  const attachment = input.attachments?.[0];
+  const url = `${wpBaseUrl()}/fagus/v1/card-mail`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Fagus-Token': token,
+    },
+    cache: 'no-store',
+    body: JSON.stringify({
+      to: input.to,
+      subject: input.subject,
+      text: input.text,
+      vcf: attachment?.content,
+      vcf_filename: attachment?.filename,
+    }),
   });
+
+  const data = (await response.json().catch(() => null)) as
+    | { success?: boolean; error?: string }
+    | null;
+
+  if (!response.ok || !data?.success) {
+    throw new Error(data?.error ?? `WP card-mail antwortete mit ${response.status}.`);
+  }
 }

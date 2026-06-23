@@ -24,14 +24,12 @@ services:
       - WP_API_URL=http://127.0.0.1/wp-json/wp/v2
       # Kontaktformular: E-Mails werden via wp_mail() / WP Mail SMTP gesendet.
       # Empfaenger konfigurierbar als WP-Option (fagus_contact_email), Standard: hallo@broetzens.de
-      # Digitale Kontaktkarte (/c/<slug>): direkter SMTP-Versand via Nodemailer
-      # (lib/mailer.ts). Werte kommen aus .env (gitignored). Ohne diese Variablen
-      # schlaegt nur der Karten-Mailversand fehl, der Rest laeuft normal weiter.
-      - SMTP_HOST=${SMTP_HOST:-}
-      - SMTP_PORT=${SMTP_PORT:-587}
-      - SMTP_USER=${SMTP_USER:-}
-      - SMTP_PASS=${SMTP_PASS:-}
-      - SMTP_FROM=${SMTP_FROM:-}
+      # Digitale Kontaktkarte (/c/<slug>): Mailversand laeuft ebenfalls ueber
+      # wp_mail() (mu-plugin fagus/v1/card-mail) — derselbe Weg wie das
+      # Kontaktformular, keine separaten SMTP-Daten noetig. Das gemeinsame
+      # Geheimnis schuetzt den server-zu-server-Endpoint; wird von Next.js UND
+      # PHP gelesen. Wert aus .env (gitignored). Leer = Karten-Mailversand aus.
+      - CARD_MAIL_TOKEN=${CARD_MAIL_TOKEN:-}
       # Zentrales Logging (log.broetzens.de). API-Key kommt aus .env (gitignored).
       # Leer = Logging deaktiviert (graceful no-op in app/api/log/route.ts).
       - LOGGING_API_KEY=${LOGGING_API_KEY:-}
