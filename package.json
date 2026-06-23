@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import:linkedin": "node scripts/import-linkedin-posts.mjs"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",
