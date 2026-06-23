@@ -31,17 +31,14 @@ export interface ContactCard {
 
 export const CARDS: ContactCard[] = [
   {
-    slug: 'johannes-broetzen',
+    slug: 'xXCGFJ',
     firstName: 'Johannes',
-    lastName: 'Brötzen',
-    fullName: 'Johannes Brötzen',
-    org: 'Broetzens IT Cattles & Cows',
+    lastName: 'Brötz',
+    fullName: 'Johannes Brötz',
+    org: 'Brötzens IT Cattles & Cows',
     title: 'IT-Beratung Forst',
     emails: [{ type: 'work', value: 'johannes@broetzens.de' }],
-    // Telefonnummer bewusst leer gelassen — hier die echte Mobilnummer
-    // ergänzen, sobald sie auf der Karte stehen soll, z.B.:
-    // phones: [{ type: 'cell', value: '+49 …' }],
-    phones: [],
+    phones: [{ type: 'cell', value: '+491632347224' }],
     url: 'https://broetzens.de',
     links: [],
     note: 'Kennengelernt über digitale Kontaktkarte',
