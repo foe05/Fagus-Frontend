@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CARDS, getCardBySlug } from '@/lib/cards';
 import ContactCardView from '@/components/card/ContactCardView';
+import ExchangeForm from '@/components/card/ExchangeForm';
 
 // 5-Min-ISR wie im restlichen Projekt.
 export const revalidate = 300;
@@ -51,8 +52,12 @@ export default async function ContactCardPage({
 
   return (
     <div className="min-h-screen bg-bg-light px-4 py-10 sm:py-16">
-      <div className="mx-auto w-full max-w-md">
+      <div className="mx-auto w-full max-w-md space-y-6">
         <ContactCardView card={card} cardUrl={cardUrl} />
+
+        <section className="rounded-3xl bg-white p-6 shadow-lg ring-1 ring-border-light sm:p-8">
+          <ExchangeForm slug={card.slug} ownerLabel={card.org ?? card.fullName} />
+        </section>
       </div>
     </div>
   );
